@@ -1,30 +1,86 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>ポケモン図鑑</title>
+    <meta charset="UTF-8">
+    <title>ポケモン図鑑</title>
+    <link rel="stylesheet" th:href="@{/css/pokedex.css}">
 </head>
 <body>
 
-<h1>PokemonLab 図鑑</h1>
+<main class="pokedex-shell">
 
-<table border="1">
+    <header class="pokedex-header">
+        <div class="status-light"></div>
 
-    <tr>
-        <th>図鑑No</th>
-        <th>名前</th>
-        <th>タイプ1</th>
-        <th>タイプ2</th>
-    </tr>
+        <div>
+            <p class="system-label">POKÉMON DATABASE SYSTEM</p>
+            <h1>ポケモン図鑑</h1>
+        </div>
 
-    <tr th:each="pokemon : ${pokemonList}">
-        <td th:text="${pokemon.pokedexNo}"></td>
-        <td th:text="${pokemon.name}"></td>
-        <td th:text="${pokemon.type1}"></td>
-        <td th:text="${pokemon.type2}"></td>
-    </tr>
+        <a class="home-link" th:href="@{/}">
+            ホーム
+        </a>
+    </header>
 
-</table>
+    <section class="pokedex-screen">
+
+        <div class="screen-heading">
+            <h2>ポケモンリスト</h2>
+            <span th:text="${pokemonList.size()} + ' 件'"></span>
+        </div>
+
+        <div class="table-wrapper">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>図鑑No</th>
+                        <th>名前</th>
+                        <th>タイプ1</th>
+                        <th>タイプ2</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="pokemon : ${pokemonList}">
+                        <td th:text="${#numbers.formatInteger(pokemon.pokedexNo, 3)}"></td>
+
+                        <td>
+                            <a
+                                th:href="@{/pokedex/{id}(id=${pokemon.id})}"
+                                th:text="${pokemon.name}">
+                            </a>
+                        </td>
+
+                        <td>
+                            <span
+                                class="type-badge"
+                                th:text="${pokemon.type1}">
+                            </span>
+                        </td>
+
+                        <td>
+                            <span
+                                class="type-badge"
+                                th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
+                                th:text="${pokemon.type2}">
+                            </span>
+
+                            <span
+                                class="no-type"
+                                th:unless="${pokemon.type2 != null and !pokemon.type2.isBlank()}">
+                                ―
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
 
 </body>
 </html>

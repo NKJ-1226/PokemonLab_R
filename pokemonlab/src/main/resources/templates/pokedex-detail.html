@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title th:text="${pokemon.name} + ' | PokemonLab図鑑'">
+        ポケモン図鑑
+    </title>
+
+    <link
+        rel="stylesheet"
+        th:href="@{/css/pokedex-detail.css}">
+</head>
+
+<body>
+
+<main class="device">
+
+    <header class="device-header">
+
+        <div class="status-light"></div>
+
+        <div>
+            <p class="system-label">
+                POKÉMON DATA TERMINAL
+            </p>
+
+            <h1>ポケモン図鑑</h1>
+        </div>
+
+        <a
+            class="list-button"
+            th:href="@{/pokedex}">
+            一覧へ戻る
+        </a>
+
+    </header>
+
+    <section class="screen">
+
+        <div class="pokemon-summary">
+
+            <!-- ポケモン画像 -->
+            <div class="image-panel">
+
+                <img
+                    class="pokemon-sprite"
+                    th:src="@{/images/pokemon/{id}.png(id=${pokemon.id})}"
+                    th:alt="${pokemon.name}"
+                    onerror="
+                        this.style.display='none';
+                        this.nextElementSibling.style.display='grid';
+                    ">
+
+                <div class="image-fallback">
+                    ?
+                </div>
+
+                <p class="image-caption">
+                    IMAGE DATA
+                </p>
+
+            </div>
+
+            <!-- 基本情報 -->
+            <div class="identity-panel">
+
+                <p
+                    class="dex-number"
+                    th:text="'No.' + ${#numbers.formatInteger(pokemon.pokedexNo, 3)}">
+                </p>
+
+                <h2 th:text="${pokemon.name}"></h2>
+
+                <div class="types">
+
+                    <span
+                        class="type-badge"
+                        th:text="${pokemon.type1}">
+                    </span>
+
+                    <span
+                        class="type-badge"
+                        th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
+                        th:text="${pokemon.type2}">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 種族値 -->
+        <section class="stats-panel">
+
+            <div class="stats-title">
+
+                <h3>BASE STATUS</h3>
+
+                <strong th:text="'TOTAL ' + ${pokemon.total}">
+                </strong>
+
+            </div>
+
+            <div class="stat-row">
+                <span>HP</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.hp * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.hp}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>こうげき</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.attack * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.attack}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>ぼうぎょ</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.defense * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.defense}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>とくこう</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.spAttack * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.spAttack}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>とくぼう</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.spDefense * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.spDefense}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>すばやさ</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.speed * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.speed}"></strong>
+            </div>
+
+        </section>
+
+    </section>
+
+    <!-- 前後移動 -->
+    <nav class="navigation">
+
+        <a
+            class="nav-button"
+            th:if="${previousPokemon != null}"
+            th:href="@{/pokedex/{id}(id=${previousPokemon.id})}">
+
+            <span>◀ PREV</span>
+
+            <strong th:text="${previousPokemon.name}">
+            </strong>
+
+        </a>
+
+        <div
+            class="nav-button disabled"
+            th:unless="${previousPokemon != null}">
+
+            <span>◀ PREV</span>
+            <strong>なし</strong>
+
+        </div>
+
+        <a
+            class="nav-button"
+            th:if="${nextPokemon != null}"
+            th:href="@{/pokedex/{id}(id=${nextPokemon.id})}">
+
+            <span>NEXT ▶</span>
+
+            <strong th:text="${nextPokemon.name}">
+            </strong>
+
+        </a>
+
+        <div
+            class="nav-button disabled"
+            th:unless="${nextPokemon != null}">
+
+            <span>NEXT ▶</span>
+            <strong>なし</strong>
+
+        </div>
+
+    </nav>
+
+</main>
+
+</body>
+</html>

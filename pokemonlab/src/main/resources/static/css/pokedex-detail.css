@@ -1,0 +1,493 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --red-main: #c62828;
+    --red-dark: #7f1010;
+    --red-deep: #4f0707;
+
+    --screen-main: #26352f;
+    --screen-dark: #0f1714;
+    --screen-border: #6f7d77;
+
+    --text-main: #f3fff8;
+    --text-green: #a7ffd1;
+    --text-yellow: #ffd95a;
+
+    --panel: #18231f;
+    --line: #40554c;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 28px 16px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    background:
+        radial-gradient(circle at top, #454545 0%, #191919 48%, #080808 100%);
+
+    color: var(--text-main);
+
+    font-family:
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
+}
+
+/* 図鑑端末本体 */
+.device {
+    width: min(980px, 100%);
+    padding: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e04444 0%,
+            var(--red-main) 32%,
+            var(--red-dark) 68%,
+            var(--red-deep) 100%
+        );
+
+    border: 4px solid #4a0505;
+    border-radius: 34px;
+
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.7),
+        inset 0 0 0 3px rgba(255, 255, 255, 0.14),
+        inset 0 -12px 20px rgba(55, 0, 0, 0.35);
+}
+
+/* 上部タイトル */
+.device-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 18px;
+    padding: 2px 8px;
+}
+
+.status-light {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+
+    background: #63ffb5;
+    border: 3px solid #18452f;
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 10px #63ffb5,
+        0 0 24px rgba(99, 255, 181, 0.78);
+}
+
+.system-label {
+    margin: 0 0 3px;
+
+    color: #ffd9d9;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+}
+
+.device-header h1 {
+    margin: 0;
+
+    color: white;
+    font-size: clamp(24px, 4vw, 36px);
+    letter-spacing: 0.04em;
+}
+
+.list-button {
+    margin-left: auto;
+    padding: 10px 18px;
+
+    background: linear-gradient(#3d3d3d, #202020);
+    border: 2px solid #686868;
+    border-radius: 12px;
+
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 4px 0 #121212;
+}
+
+.list-button:hover {
+    transform: translateY(1px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 2px 0 #121212;
+}
+
+/* 液晶全体 */
+.screen {
+    padding: 24px;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.018) 0,
+            rgba(255, 255, 255, 0.018) 2px,
+            transparent 2px,
+            transparent 5px
+        ),
+        linear-gradient(
+            180deg,
+            var(--screen-main),
+            var(--screen-dark)
+        );
+
+    border: 6px solid var(--screen-border);
+    border-radius: 20px;
+
+    box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.82),
+        0 0 0 3px #262d2a;
+}
+
+/* 上段：画像＋基本情報 */
+.pokemon-summary {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.95fr) 1.35fr;
+    gap: 24px;
+
+    margin-bottom: 24px;
+}
+
+/* ポケモン画像側 */
+.image-panel {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 330px;
+    padding: 22px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(120, 255, 185, 0.08),
+            transparent 70%
+        ),
+        #0c1612;
+
+    border: 2px solid #597266;
+    border-radius: 14px;
+
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.72);
+}
+
+.image-panel::before,
+.image-panel::after {
+    content: "";
+    position: absolute;
+
+    width: 12px;
+    height: 12px;
+
+    background: #73877d;
+    border-radius: 50%;
+}
+
+.image-panel::before {
+    top: 10px;
+    left: 10px;
+}
+
+.image-panel::after {
+    right: 10px;
+    bottom: 10px;
+}
+
+.pokemon-sprite {
+    width: 240px;
+    height: 240px;
+
+    object-fit: contain;
+    image-rendering: pixelated;
+
+    filter:
+        drop-shadow(0 14px 10px rgba(0, 0, 0, 0.5));
+}
+
+.image-fallback {
+    display: none;
+    place-items: center;
+
+    width: 210px;
+    height: 210px;
+
+    border: 3px dashed #65927e;
+    border-radius: 18px;
+
+    color: #89ffc3;
+    font-size: 86px;
+    font-weight: bold;
+}
+
+.image-caption {
+    margin: 16px 0 0;
+
+    color: #789789;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+}
+
+/* 右側の基本情報 */
+.identity-panel {
+    padding: 24px;
+
+    background: rgba(20, 34, 28, 0.82);
+    border: 2px solid #577064;
+    border-radius: 14px;
+
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.45);
+}
+
+.dex-number {
+    margin: 0;
+
+    color: var(--text-green);
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+}
+
+.identity-panel h2 {
+    margin: 10px 0 20px;
+
+    color: white;
+    font-size: clamp(34px, 6vw, 54px);
+    line-height: 1.1;
+}
+
+.types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 24px;
+}
+
+.type-badge {
+    min-width: 92px;
+    padding: 8px 16px;
+
+    background: #41554c;
+    border: 2px solid #7a9187;
+    border-radius: 999px;
+
+    color: white;
+    text-align: center;
+    font-weight: bold;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.evolution-data {
+    padding: 16px 18px;
+
+    background: #101b17;
+    border-left: 5px solid #79e0ae;
+    border-radius: 8px;
+}
+
+.evolution-data p {
+    margin: 8px 0;
+}
+
+/* 種族値エリア */
+.stats-panel {
+    padding: 22px;
+
+    background: #0b1511;
+    border: 2px solid #43594f;
+    border-radius: 14px;
+
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.55);
+}
+
+.stats-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #3d5148;
+}
+
+.stats-title h3 {
+    margin: 0;
+
+    color: var(--text-green);
+    letter-spacing: 0.14em;
+}
+
+.stats-title strong {
+    color: var(--text-yellow);
+    font-size: 18px;
+}
+
+.stat-row {
+    display: grid;
+    grid-template-columns: 96px 1fr 48px;
+    align-items: center;
+    gap: 14px;
+
+    margin: 13px 0;
+}
+
+.stat-row > span {
+    color: #edf7f2;
+    font-weight: bold;
+}
+
+.stat-track {
+    height: 17px;
+    overflow: hidden;
+
+    background: #24322c;
+    border: 1px solid #53675e;
+    border-radius: 999px;
+
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.stat-fill {
+    height: 100%;
+    min-width: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #43bd80,
+            #b3ffda
+        );
+
+    border-radius: inherit;
+
+    box-shadow:
+        0 0 10px rgba(79, 255, 170, 0.6);
+}
+
+.stat-row strong {
+    color: white;
+    text-align: right;
+}
+
+/* 前後移動 */
+.navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    margin-top: 18px;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    min-height: 68px;
+    padding: 13px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #3d3d3d,
+            #202020
+        );
+
+    border: 2px solid #666;
+    border-radius: 13px;
+
+    color: white;
+    text-decoration: none;
+
+    box-shadow:
+        0 5px 0 #121212,
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.nav-button:hover {
+    transform: translateY(2px);
+    box-shadow:
+        0 3px 0 #121212,
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.nav-button span {
+    color: #91ffc8;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+}
+
+.nav-button strong {
+    font-size: 16px;
+}
+
+.nav-button.disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* スマホ対応 */
+@media (max-width: 720px) {
+    body {
+        padding: 12px;
+    }
+
+    .device {
+        padding: 14px;
+        border-radius: 22px;
+    }
+
+    .screen {
+        padding: 14px;
+    }
+
+    .pokemon-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .image-panel {
+        min-height: 280px;
+    }
+
+    .pokemon-sprite {
+        width: 210px;
+        height: 210px;
+    }
+
+    .stat-row {
+        grid-template-columns: 80px 1fr 40px;
+        gap: 8px;
+    }
+
+    .navigation {
+        grid-template-columns: 1fr;
+    }
+
+    .list-button {
+        padding: 8px 11px;
+    }
+}

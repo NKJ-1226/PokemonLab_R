@@ -19,6 +19,7 @@ public class SecurityConfig {
                     "/pokedex",
                     "/quiz",
                     "/ranking",
+                    "/pokedex/**",
                     "/css/**",
                     "/js/**",
                     "/images/**"
