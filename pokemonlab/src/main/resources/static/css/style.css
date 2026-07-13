@@ -1,0 +1,114 @@
+body{
+    background:#111;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+    font-family:sans-serif;
+}
+
+/* ポケギア本体 */
+.pokegear{
+    width:800px;
+    background:#b71c1c;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 0 25px rgba(0,0,0,0.7);
+}
+
+/* タイトルバー */
+.title-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+/* 電源ランプ */
+.light{
+    width:15px;
+    height:15px;
+    border-radius:50%;
+
+    background:#00ff00;
+    box-shadow:0 0 10px #00ff00;
+}
+
+/* メイン画面 */
+.screen{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:#1e1e1e;
+    color:#00ff99;
+
+    border-radius:10px;
+    padding:30px;
+}
+
+/* 左側 */
+.pokemon-left{
+    width:40%;
+    text-align:center;
+}
+
+/* 右側 */
+.pokemon-right{
+    width:55%;
+}
+
+.pokemon-right h3{
+    margin:0;
+}
+
+.pokemon-right h1{
+    margin:10px 0 20px;
+    font-size:36px;
+}
+
+.pokemon-right p{
+    margin:8px 0;
+}
+
+/* 仮画像 */
+.pokemon-image{
+    font-size:100px;
+}
+
+/* メニュー */
+.menu{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+
+    margin-top:20px;
+}
+
+/* ボタン */
+.menu button{
+    flex:1;
+
+    background:#424242;
+    color:white;
+
+    border:none;
+    border-radius:8px;
+
+    padding:15px;
+
+    font-size:16px;
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.menu button:hover{
+    background:#616161;
+    transform:translateY(-2px);
+}

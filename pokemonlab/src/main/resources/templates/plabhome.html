@@ -1,16 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>PokemonLab</title>
+<meta charset="UTF-8">
+<title>PokemonLab</title>
+<!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
+ <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-    <h1>PokemonLabへようこそ！</h1>
+<div class="pokegear">
 
-    <p>
-        ポケモンのクイズと学習ができるサイトです！
-    </p>
+    <div class="title-bar">
+        <div class="light"></div>
+        <span>PokemonLab</span>
+    </div>
+
+    <div class="screen">
+
+        <div class="pokemon-left">
+
+            <div class="pokemon-image">
+                ⚡
+            </div>
+
+        </div>
+
+        <div class="pokemon-right">
+
+            <h3>No.025</h3>
+            <h1>ピカチュウ</h1>
+
+            <p>タイプ：でんき</p>
+            <p>ぶんるい：ねずみポケモン</p>
+
+        </div>
+
+    </div>
+
+    <div class="menu">
+
+        <a href="/pokedex">
+            <button>図鑑</button>
+        </a>
+
+        <a th:href="@{/quiz}">
+            <button>クイズ</button>
+        </a>
+
+        <a th:href="@{/ranking}">
+            <button>ランキング</button>
+        </a>
+
+        <a th:href="@{/login}">
+            <button>ログイン</button>
+        </a>
+
+    </div>
+
+</div>
 
 </body>
 </html>

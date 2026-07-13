@@ -14,12 +14,19 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/pokedex",
+                    "/quiz",
+                    "/ranking",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
-    
 }

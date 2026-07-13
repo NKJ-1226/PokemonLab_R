@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ポケモン図鑑</title>
+</head>
+<body>
+
+<h1>PokemonLab 図鑑</h1>
+
+<table border="1">
+
+    <tr>
+        <th>図鑑No</th>
+        <th>名前</th>
+        <th>タイプ1</th>
+        <th>タイプ2</th>
+    </tr>
+
+    <tr th:each="pokemon : ${pokemonList}">
+        <td th:text="${pokemon.pokedexNo}"></td>
+        <td th:text="${pokemon.name}"></td>
+        <td th:text="${pokemon.type1}"></td>
+        <td th:text="${pokemon.type2}"></td>
+    </tr>
+
+</table>
+
+</body>
+</html>
