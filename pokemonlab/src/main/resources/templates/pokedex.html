@@ -35,6 +35,7 @@
                 <thead>
                     <tr>
                         <th>図鑑No</th>
+                        <th>世代</th>
                         <th>名前</th>
                         <th>タイプ1</th>
                         <th>タイプ2</th>
@@ -44,6 +45,8 @@
                 <tbody>
                     <tr th:each="pokemon : ${pokemonList}">
                         <td th:text="${#numbers.formatInteger(pokemon.pokedexNo, 3)}"></td>
+
+                        <td th:text="'第' + ${pokemon.generation} + '世代'"></td>
 
                         <td>
                             <a

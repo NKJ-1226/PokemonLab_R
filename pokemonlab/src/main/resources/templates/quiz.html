@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>種族値クイズ</title>
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
+</head>
+<body>
+
+<main class="quiz-device">
+
+    <header class="quiz-header">
+
+        <div class="quiz-light"></div>
+
+        <div>
+            <p>BASE STATUS QUIZ SYSTEM</p>
+            <h1>この種族値のポケモンは？</h1>
+        </div>
+
+        <div class="question-counter">
+            第
+            <span th:text="${questionNumber}"></span>
+            /
+            <span th:text="${totalQuestion}"></span>
+            問
+        </div>
+
+        <a th:href="@{/}">ホーム</a>
+
+    </header>
+
+    <section class="quiz-screen">
+
+        <div class="stats-panel">
+
+            <div class="stats-title">
+
+                <h2>BASE STATUS</h2>
+
+                <strong th:text="'TOTAL ' + ${pokemon.total}">
+                </strong>
+
+            </div>
+
+            <div class="stat-row">
+                <span>HP</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.hp * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.hp}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>こうげき</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.attack * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.attack}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>ぼうぎょ</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.defense * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.defense}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>とくこう</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.spAttack * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.spAttack}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>とくぼう</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.spDefense * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.spDefense}"></strong>
+            </div>
+
+            <div class="stat-row">
+                <span>すばやさ</span>
+
+                <div class="stat-track">
+                    <div
+                        class="stat-fill"
+                        th:style="'width:' + ${pokemon.speed * 100 / 255} + '%'">
+                    </div>
+                </div>
+
+                <strong th:text="${pokemon.speed}"></strong>
+            </div>
+
+        </div>
+
+        <div class="choices">
+
+            <form
+                th:each="choice : ${choices}"
+                th:action="@{/quiz/answer}"
+                method="post">
+
+                <input
+                    type="hidden"
+                    name="selectedId"
+                    th:value="${choice.id}">
+
+                <button
+                    class="choice-button"
+                    type="submit"
+                    th:text="${choice.name}">
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

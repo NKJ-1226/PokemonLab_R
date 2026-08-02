@@ -20,17 +20,44 @@
         <div class="pokemon-left">
 
             <div class="pokemon-image">
-                ⚡
+
+                <img class="home-pokemon-sprite" th:src="@{/images/pokemon/{id}.png(id=${pokemon.id})}" th:alt="${pokemon.name}" onerror=" this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                <div class="image-preparing">
+                    <span class="question-mark">?</span>
+                    <span class="preparing-text">IMAGE PREPARING</span>
+                </div>
+
             </div>
 
         </div>
 
         <div class="pokemon-right">
 
-            <h3>No.025</h3>
-            <h1>ピカチュウ</h1>
+            <h3><p th:text="'No.' + ${#numbers.formatInteger(pokemon.pokedexNo,3)}"></p></h3>
+            <h1><h1 th:text="${pokemon.name}"></h1></h1>
 
-            <p>タイプ：でんき</p>
+            <p>
+                
+                タイプ：
+                <div class="home-types">
+
+                    <span
+                        class="home-type-badge"
+                        th:classappend="' type-' + ${pokemon.type1}"
+                        th:text="${pokemon.type1}">
+                    </span>
+
+                    <span
+                        class="home-type-badge"
+                        th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
+                        th:classappend="' type-' + ${pokemon.type2}"
+                        th:text="${pokemon.type2}">
+                    </span>
+
+                </div>
+
+            </p>
             <p>ぶんるい：ねずみポケモン</p>
 
         </div>

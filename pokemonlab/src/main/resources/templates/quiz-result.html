@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>結果発表</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/quiz.css}">
+</head>
+
+<body>
+
+<main class="quiz-device">
+
+    <section class="quiz-screen result-screen">
+
+        <h2>RESULT</h2>
+
+        <p class="result-message">
+
+            あなたのスコアは
+
+            <strong>
+                <span th:text="${score}"></span>
+                /
+                <span th:text="${total}"></span>
+            </strong>
+
+            です！
+
+        </p>
+
+        <div class="result-actions">
+
+            <a th:href="@{/quiz}">
+                もう一度遊ぶ
+            </a>
+
+            <a th:href="@{/}">
+                ホームへ戻る
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

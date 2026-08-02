@@ -53,9 +53,12 @@ body{
 }
 
 /* 左側 */
-.pokemon-left{
-    width:40%;
-    text-align:center;
+.pokemon-left {
+    width: 40%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 右側 */
@@ -77,8 +80,64 @@ body{
 }
 
 /* 仮画像 */
-.pokemon-image{
+/* .pokemon-image{
     font-size:100px;
+} */
+
+.pokemon-image {
+    width: 100%;
+    min-height: 240px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 画像が存在する場合 */
+.home-pokemon-sprite{
+
+    width:300px;
+    height:300px;
+
+    object-fit:contain;
+    image-rendering:pixelated;
+}
+
+/* 画像が存在しない場合 */
+.image-preparing {
+    display: none;
+
+    width: 220px;
+    height: 220px;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0, 255, 153, 0.08),
+            transparent 70%
+        );
+
+    border: 3px dashed #49675c;
+    border-radius: 18px;
+
+    color: #00ff99;
+}
+
+.question-mark {
+    font-size: 80px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.preparing-text {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: #6fa891;
 }
 
 /* メニュー */
@@ -112,3 +171,46 @@ body{
     background:#616161;
     transform:translateY(-2px);
 }
+
+.home-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.home-type-badge {
+    min-width: 86px;
+    padding: 8px 16px;
+
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+
+    color: white;
+    text-align: center;
+    font-weight: bold;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.28);
+}
+
+/* タイプカラー */
+.type-ノーマル { background: #8a8a78; }
+.type-ほのお   { background: #d65a32; }
+.type-みず     { background: #4b79c9; }
+.type-でんき   { background: #d6ae27; }
+.type-くさ     { background: #5a9b4b; }
+.type-こおり   { background: #5ca9b5; }
+.type-かくとう { background: #ad3028; }
+.type-どく     { background: #8e4896; }
+.type-じめん   { background: #c89f4c; }
+.type-ひこう   { background: #806bb8; }
+.type-エスパー { background: #d84c78; }
+.type-むし     { background: #849b21; }
+.type-いわ     { background: #9c8532; }
+.type-ゴースト { background: #5d4a7c; }
+.type-ドラゴン { background: #6040bd; }
+.type-あく     { background: #55433a; }
+.type-はがね   { background: #8e8e9c; }
+.type-フェアリー { background: #d7799a; }

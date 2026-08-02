@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/",
                     "/pokedex",
-                    "/quiz",
+                    "/quiz/**",
                     "/ranking",
                     "/pokedex/**",
                     "/css/**",

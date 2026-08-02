@@ -17,6 +17,10 @@ public class Pokemon {
     @Column(name = "pokedex_no")
     private Integer pokedexNo;
 
+    // 世代カラムを追加
+    @Column(name = "generation")
+    private Integer generation;
+
     private String name;
 
     @Column(name = "type_1")
