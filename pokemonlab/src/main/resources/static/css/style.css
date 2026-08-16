@@ -194,23 +194,3 @@ body{
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
         0 4px 8px rgba(0, 0, 0, 0.28);
 }
-
-/* タイプカラー */
-.type-ノーマル { background: #8a8a78; }
-.type-ほのお   { background: #d65a32; }
-.type-みず     { background: #4b79c9; }
-.type-でんき   { background: #d6ae27; }
-.type-くさ     { background: #5a9b4b; }
-.type-こおり   { background: #5ca9b5; }
-.type-かくとう { background: #ad3028; }
-.type-どく     { background: #8e4896; }
-.type-じめん   { background: #c89f4c; }
-.type-ひこう   { background: #806bb8; }
-.type-エスパー { background: #d84c78; }
-.type-むし     { background: #849b21; }
-.type-いわ     { background: #9c8532; }
-.type-ゴースト { background: #5d4a7c; }
-.type-ドラゴン { background: #6040bd; }
-.type-あく     { background: #55433a; }
-.type-はがね   { background: #8e8e9c; }
-.type-フェアリー { background: #d7799a; }

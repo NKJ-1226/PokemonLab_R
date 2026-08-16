@@ -7,9 +7,8 @@
         ポケモン図鑑
     </title>
 
-    <link
-        rel="stylesheet"
-        th:href="@{/css/pokedex-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/pokedex-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/pokemon-type.css}">
 </head>
 
 <body>
@@ -76,12 +75,14 @@
 
                     <span
                         class="type-badge"
+                        th:classappend="' type-' + ${pokemon.type1}"
                         th:text="${pokemon.type1}">
                     </span>
 
                     <span
                         class="type-badge"
                         th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
+                        th:classappend="' type-' + ${pokemon.type2}"
                         th:text="${pokemon.type2}">
                     </span>
 

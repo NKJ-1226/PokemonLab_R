@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.pokemonlab.entity.Pokemon;
 
 public interface PokemonRepository
-        extends JpaRepository<Pokemon, Integer> {
+        extends JpaRepository<Pokemon, Integer>,
+         JpaSpecificationExecutor<Pokemon>{
 
     Optional<Pokemon> findFirstByIdLessThanOrderByIdDesc(Integer id);
 

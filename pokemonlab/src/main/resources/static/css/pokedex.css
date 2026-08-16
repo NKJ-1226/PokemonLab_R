@@ -240,3 +240,599 @@ td a:hover {
         padding: 8px 10px;
     }
 }
+
+/* ========================================
+   図鑑ページネーション
+======================================== */
+
+.display-range {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    color: var(--green-light, #c4ffe0);
+    letter-spacing: 0.05em;
+}
+
+.total-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 90px;
+    padding: 8px 14px;
+
+    border: 1px solid #687771;
+    border-radius: 5px;
+
+    background: #08110e;
+    color: #8dffc7;
+
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.empty-message {
+    padding: 50px 20px;
+
+    border: 2px dashed #687771;
+    border-radius: 8px;
+
+    background: #08110e;
+    color: #c4ffe0;
+
+    text-align: center;
+    font-weight: 700;
+}
+
+.pagination-area {
+    margin-top: 24px;
+    padding-top: 20px;
+
+    border-top: 1px solid #40594e;
+}
+
+.page-status {
+    margin: 0 0 12px;
+
+    color: #c4ffe0;
+
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.page-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+
+    border: 2px solid #687771;
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #243b32 0%,
+            #101c17 100%
+        );
+
+    color: #c4ffe0;
+
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 800;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 3px 0 #08110e;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.page-button:hover {
+    border-color: #8dffc7;
+
+    background:
+        linear-gradient(
+            180deg,
+            #315443 0%,
+            #172821 100%
+        );
+
+    color: #ffffff;
+
+    transform: translateY(-2px);
+}
+
+.page-button:active {
+    transform: translateY(1px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 1px 0 #08110e;
+}
+
+.page-button.active {
+    border-color: #ffd95b;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffd95b 0%,
+            #c79614 100%
+        );
+
+    color: #1b1605;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 3px 0 #6d4e00;
+
+    cursor: default;
+    pointer-events: none;
+}
+
+.page-button.disabled {
+    border-color: #3d4944;
+
+    background: #101814;
+    color: #58645f;
+
+    box-shadow: none;
+
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.page-edge {
+    font-size: 1.25rem;
+}
+
+.page-move {
+    min-width: 66px;
+}
+
+/* ========================================
+   スマートフォン用
+======================================== */
+
+@media (max-width: 680px) {
+
+    .screen-heading {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .total-count {
+        min-width: auto;
+        padding: 7px 10px;
+
+        font-size: 0.8rem;
+    }
+
+    .pagination {
+        gap: 5px;
+    }
+
+    .page-button {
+        min-width: 36px;
+        height: 38px;
+        padding: 0 9px;
+
+        font-size: 0.8rem;
+    }
+
+    .page-move {
+        min-width: 54px;
+    }
+}
+/* ========================================
+   図鑑検索パネル
+======================================== */
+
+.search-panel {
+    margin-bottom: 24px;
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(35, 58, 49, 0.96),
+            rgba(14, 27, 22, 0.96)
+        );
+
+    border: 2px solid #53665f;
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 0 16px rgba(0, 0, 0, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.28);
+}
+
+.search-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #476157;
+}
+
+.search-panel-label {
+    margin: 0 0 3px;
+
+    color: #7fcaa5;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+}
+
+.search-panel-heading h2 {
+    margin: 0;
+
+    color: #b4ffda;
+    font-size: 1.25rem;
+}
+
+.search-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 100px;
+    padding: 7px 11px;
+
+    background: #101915;
+    border: 1px solid #53665f;
+    border-radius: 999px;
+
+    color: #71827a;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.search-status.active {
+    background: rgba(70, 179, 121, 0.15);
+    border-color: #65d99d;
+
+    color: #9bffcf;
+
+    box-shadow:
+        0 0 10px rgba(101, 217, 157, 0.18);
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1.5fr)
+        minmax(150px, 0.8fr)
+        minmax(170px, 0.9fr)
+        auto;
+    align-items: end;
+    gap: 12px;
+}
+
+.search-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.search-field label {
+    color: #c8ddd3;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.search-field input,
+.search-field select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+
+    background: #08110e;
+    border: 2px solid #53665f;
+    border-radius: 7px;
+    outline: none;
+
+    color: #f2fff8;
+    font: inherit;
+    font-size: 0.9rem;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+.search-field input::placeholder {
+    color: #708078;
+}
+
+.search-field input:hover,
+.search-field select:hover {
+    border-color: #708b80;
+}
+
+.search-field input:focus,
+.search-field select:focus {
+    background: #0d1814;
+    border-color: #8dffc7;
+
+    box-shadow:
+        0 0 0 3px rgba(141, 255, 199, 0.12);
+}
+
+.search-field select {
+    cursor: pointer;
+}
+
+.search-field select option {
+    background: #101915;
+    color: #f2fff8;
+}
+
+.search-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-button,
+.reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;
+    padding: 0 16px;
+
+    border-radius: 7px;
+
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 800;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.search-button {
+    gap: 8px;
+
+    min-width: 94px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #d83a3a,
+            #8f1515
+        );
+
+    border: 2px solid #ec6666;
+
+    color: #ffffff;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        0 3px 0 #560a0a;
+}
+
+.search-button:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #eb4c4c,
+            #a81c1c
+        );
+}
+
+.search-button:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 1px 0 #560a0a;
+}
+
+.button-light {
+    width: 9px;
+    height: 9px;
+
+    background: #9bffcf;
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 7px rgba(155, 255, 207, 0.9);
+}
+
+.reset-button {
+    min-width: 82px;
+
+    background: #202c27;
+    border: 2px solid #53665f;
+
+    color: #c8ddd3;
+}
+
+.reset-button:hover {
+    background: #304139;
+    border-color: #7d968c;
+
+    color: #ffffff;
+}
+
+/* ========================================
+   適用中の検索条件
+======================================== */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+
+    margin: -3px 0 15px;
+    padding: 10px 12px;
+
+    background: rgba(141, 255, 199, 0.06);
+    border: 1px solid rgba(141, 255, 199, 0.22);
+    border-radius: 8px;
+}
+
+.active-filters-label {
+    padding: 5px 9px;
+
+    background: #8dffc7;
+    border-radius: 5px;
+
+    color: #10231b;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.filter-chip {
+    padding: 5px 9px;
+
+    background: #15251f;
+    border: 1px solid #486057;
+    border-radius: 999px;
+
+    color: #bad1c6;
+    font-size: 0.78rem;
+}
+
+.filter-chip strong {
+    color: #ffffff;
+}
+
+/* ========================================
+   検索結果0件
+======================================== */
+
+.empty-message-title {
+    margin: 0 0 10px;
+
+    color: #c4ffe0;
+    font-size: 1rem;
+}
+
+.empty-message-text {
+    margin: 0 0 20px;
+
+    color: #8da299;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+.empty-reset-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 0 16px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #315443,
+            #172821
+        );
+
+    border: 2px solid #687771;
+    border-radius: 7px;
+
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.empty-reset-link:hover {
+    border-color: #8dffc7;
+}
+
+/* ========================================
+   検索パネルのレスポンシブ対応
+======================================== */
+
+@media (max-width: 900px) {
+
+    .search-form {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .search-field-name {
+        grid-column: 1 / -1;
+    }
+
+    .search-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .search-panel {
+        padding: 14px;
+    }
+
+    .search-panel-heading {
+        align-items: flex-start;
+    }
+
+    .search-status {
+        min-width: auto;
+        padding: 6px 8px;
+
+        font-size: 0.62rem;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+
+    .search-field-name,
+    .search-actions {
+        grid-column: auto;
+    }
+
+    .search-actions {
+        justify-content: stretch;
+    }
+
+    .search-button,
+    .reset-button {
+        flex: 1;
+    }
+
+    .active-filters {
+        align-items: flex-start;
+    }
+}

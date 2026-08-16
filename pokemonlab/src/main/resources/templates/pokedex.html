@@ -1,37 +1,316 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    
     <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>ポケモン図鑑</title>
+
     <link rel="stylesheet" th:href="@{/css/pokedex.css}">
+    <link rel="stylesheet" th:href="@{/css/pokemon-type.css}">
 </head>
+
 <body>
 
 <main class="pokedex-shell">
 
     <header class="pokedex-header">
+
         <div class="status-light"></div>
 
         <div>
-            <p class="system-label">POKÉMON DATABASE SYSTEM</p>
+            <p class="system-label">
+                POKÉMON DATABASE SYSTEM
+            </p>
+
             <h1>ポケモン図鑑</h1>
         </div>
 
-        <a class="home-link" th:href="@{/}">
+        <a
+            class="home-link"
+            th:href="@{/}"
+        >
             ホーム
         </a>
+
     </header>
 
     <section class="pokedex-screen">
 
+        <!-- =====================================
+             検索フォーム
+        ====================================== -->
+        <section class="search-panel">
+
+            <div class="search-panel-heading">
+
+                <div>
+                    <p class="search-panel-label">
+                        SEARCH TERMINAL
+                    </p>
+
+                    <h2>図鑑検索</h2>
+                </div>
+
+                <span
+                    class="search-status"
+                    th:classappend="${searchActive}
+                        ? ' active'"
+                    th:text="${searchActive}
+                        ? 'FILTER ON'
+                        : 'FILTER OFF'"
+                >
+                    FILTER OFF
+                </span>
+
+            </div>
+
+            <form
+                class="search-form"
+                th:action="@{/pokedex}"
+                method="get"
+            >
+
+                <!--
+                    検索を実行するときは、
+                    必ず1ページ目へ戻す。
+                -->
+                <input
+                    type="hidden"
+                    name="page"
+                    value="0"
+                >
+
+                <div class="search-field search-field-name">
+
+                    <label for="name">
+                        ポケモン名
+                    </label>
+
+                    <input
+                        id="name"
+                        name="name"
+                        type="search"
+                        th:value="${searchName}"
+                        placeholder="名前を入力"
+                        maxlength="50"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <div class="search-field">
+
+                    <label for="generation">
+                        世代
+                    </label>
+
+                    <select
+                        id="generation"
+                        name="generation"
+                    >
+
+                        <option value="">
+                            全世代
+                        </option>
+
+                        <option
+                            th:each="generationNumber :
+                                ${#numbers.sequence(1, 9)}"
+                            th:value="${generationNumber}"
+                            th:text="'第'
+                                + ${generationNumber}
+                                + '世代'"
+                            th:selected="${selectedGeneration
+                                != null
+                                and selectedGeneration
+                                == generationNumber}"
+                        >
+                            第1世代
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="search-field">
+
+                    <label for="type">
+                        タイプ
+                    </label>
+
+                    <select
+                        id="type"
+                        name="type"
+                    >
+
+                        <option value="">
+                            すべてのタイプ
+                        </option>
+
+                        <option
+                            th:each="pokemonType :
+                                ${pokemonTypes}"
+                            th:value="${pokemonType}"
+                            th:text="${pokemonType}"
+                            th:selected="${selectedType
+                                == pokemonType}"
+                        >
+                            ほのお
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="search-actions">
+
+                    <button
+                        class="search-button"
+                        type="submit"
+                    >
+                        <span class="button-light"></span>
+                        検索
+                    </button>
+
+                    <a
+                        class="reset-button"
+                        th:href="@{/pokedex}"
+                    >
+                        リセット
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- =====================================
+             一覧見出し
+        ====================================== -->
         <div class="screen-heading">
-            <h2>ポケモンリスト</h2>
-            <span th:text="${pokemonList.size()} + ' 件'"></span>
+
+            <div>
+                <h2>ポケモンリスト</h2>
+
+                <p
+                    class="display-range"
+                    th:if="${totalElements > 0}"
+                >
+                    <span th:text="${startItem}">1</span>
+                    ～
+                    <span th:text="${endItem}">20</span>
+                    件を表示
+                </p>
+
+                <p
+                    class="display-range"
+                    th:if="${totalElements == 0}"
+                >
+                    表示できるデータがありません
+                </p>
+            </div>
+
+            <span
+                class="total-count"
+                th:text="${totalElements} + ' 件'"
+            >
+                0 件
+            </span>
+
         </div>
 
-        <div class="table-wrapper">
+        <!-- =====================================
+             検索条件表示
+        ====================================== -->
+        <div
+            class="active-filters"
+            th:if="${searchActive}"
+        >
+
+            <span class="active-filters-label">
+                検索中
+            </span>
+
+            <span
+                class="filter-chip"
+                th:if="${!searchName.isBlank()}"
+            >
+                名前：
+                <strong th:text="${searchName}">
+                    ピカ
+                </strong>
+            </span>
+
+            <span
+                class="filter-chip"
+                th:if="${selectedGeneration != null}"
+            >
+                世代：
+                <strong
+                    th:text="'第'
+                        + ${selectedGeneration}
+                        + '世代'"
+                >
+                    第1世代
+                </strong>
+            </span>
+
+            <span
+                class="filter-chip"
+                th:if="${!selectedType.isBlank()}"
+            >
+                タイプ：
+                <strong th:text="${selectedType}">
+                    でんき
+                </strong>
+            </span>
+
+        </div>
+
+        <!-- =====================================
+             0件の場合
+        ====================================== -->
+        <div
+            class="empty-message"
+            th:if="${pokemonList.isEmpty()}"
+        >
+
+            <p class="empty-message-title">
+                該当するポケモンが見つかりませんでした。
+            </p>
+
+            <p class="empty-message-text">
+                名前・世代・タイプの条件を変更して、
+                もう一度検索してください。
+            </p>
+
+            <a
+                class="empty-reset-link"
+                th:href="@{/pokedex}"
+            >
+                全ポケモンを表示
+            </a>
+
+        </div>
+
+        <!-- =====================================
+             ポケモン一覧
+        ====================================== -->
+        <div
+            class="table-wrapper"
+            th:unless="${pokemonList.isEmpty()}"
+        >
 
             <table>
+
                 <thead>
                     <tr>
                         <th>図鑑No</th>
@@ -43,22 +322,45 @@
                 </thead>
 
                 <tbody>
-                    <tr th:each="pokemon : ${pokemonList}">
-                        <td th:text="${#numbers.formatInteger(pokemon.pokedexNo, 3)}"></td>
 
-                        <td th:text="'第' + ${pokemon.generation} + '世代'"></td>
+                    <tr th:each="pokemon : ${pokemonList}">
+
+                        <td
+                            th:text="${#numbers.formatInteger(
+                                pokemon.pokedexNo,
+                                3
+                            )}"
+                        >
+                            001
+                        </td>
+
+                        <td
+                            th:text="'第'
+                                + ${pokemon.generation}
+                                + '世代'"
+                        >
+                            第1世代
+                        </td>
 
                         <td>
                             <a
-                                th:href="@{/pokedex/{id}(id=${pokemon.id})}"
-                                th:text="${pokemon.name}">
+                                class="pokemon-name-link"
+                                th:href="@{/pokedex/{id}(
+                                    id=${pokemon.id}
+                                )}"
+                                th:text="${pokemon.name}"
+                            >
+                                ポケモン名
                             </a>
                         </td>
 
                         <td>
                             <span
                                 class="type-badge"
-                                th:text="${pokemon.type1}">
+                                th:classappend="' type-' + ${pokemon.type1}"
+                                th:text="${pokemon.type1}"
+                            >
+                                タイプ1
                             </span>
                         </td>
 
@@ -66,24 +368,158 @@
                             <span
                                 class="type-badge"
                                 th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
-                                th:text="${pokemon.type2}">
+                                th:classappend="' type-' + ${pokemon.type2}"
+                                th:text="${pokemon.type2}"
+                            >
+                                タイプ2
                             </span>
 
                             <span
                                 class="no-type"
-                                th:unless="${pokemon.type2 != null and !pokemon.type2.isBlank()}">
+                                th:unless="${pokemon.type2 != null
+                                    and !pokemon.type2.isBlank()}"
+                            >
                                 ―
                             </span>
                         </td>
+
                     </tr>
+
                 </tbody>
+
             </table>
 
         </div>
+
+        <!-- =====================================
+             ページネーション
+        ====================================== -->
+        <nav
+            class="pagination-area"
+            aria-label="図鑑ページ"
+            th:if="${pokemonPage.totalPages > 1}"
+        >
+
+            <p class="page-status">
+                <span
+                    th:text="${pokemonPage.number + 1}"
+                >
+                    1
+                </span>
+
+                /
+
+                <span
+                    th:text="${pokemonPage.totalPages}"
+                >
+                    1
+                </span>
+
+                ページ
+            </p>
+
+            <div class="pagination">
+
+                <!-- 最初のページ -->
+                <a
+                    class="page-button page-edge"
+                    th:classappend="${pokemonPage.first}
+                        ? ' disabled'"
+                    th:href="${pokemonPage.first}
+                        ? null
+                        : @{/pokedex(
+                            page=0,
+                            name=${searchName},
+                            generation=${selectedGeneration},
+                            type=${selectedType}
+                        )}"
+                    aria-label="最初のページ"
+                >
+                    &laquo;
+                </a>
+
+                <!-- 前のページ -->
+                <a
+                    class="page-button page-move"
+                    th:classappend="${pokemonPage.first}
+                        ? ' disabled'"
+                    th:href="${pokemonPage.first}
+                        ? null
+                        : @{/pokedex(
+                            page=${pokemonPage.number - 1},
+                            name=${searchName},
+                            generation=${selectedGeneration},
+                            type=${selectedType}
+                        )}"
+                >
+                    まえ
+                </a>
+
+                <!-- ページ番号 -->
+                <a
+                    th:each="pageNumber : ${pageNumbers}"
+                    class="page-button page-number"
+                    th:classappend="${pageNumber
+                        == pokemonPage.number}
+                        ? ' active'"
+                    th:href="@{/pokedex(
+                        page=${pageNumber},
+                        name=${searchName},
+                        generation=${selectedGeneration},
+                        type=${selectedType}
+                    )}"
+                    th:text="${pageNumber + 1}"
+                    th:attr="aria-current=${pageNumber
+                        == pokemonPage.number}
+                        ? 'page'
+                        : null"
+                >
+                    1
+                </a>
+
+                <!-- 次のページ -->
+                <a
+                    class="page-button page-move"
+                    th:classappend="${pokemonPage.last}
+                        ? ' disabled'"
+                    th:href="${pokemonPage.last}
+                        ? null
+                        : @{/pokedex(
+                            page=${pokemonPage.number + 1},
+                            name=${searchName},
+                            generation=${selectedGeneration},
+                            type=${selectedType}
+                        )}"
+                >
+                    つぎ
+                </a>
+
+                <!-- 最後のページ -->
+                <a
+                    class="page-button page-edge"
+                    th:classappend="${pokemonPage.last}
+                        ? ' disabled'"
+                    th:href="${pokemonPage.last}
+                        ? null
+                        : @{/pokedex(
+                            page=${pokemonPage.totalPages - 1},
+                            name=${searchName},
+                            generation=${selectedGeneration},
+                            type=${selectedType}
+                        )}"
+                    aria-label="最後のページ"
+                >
+                    &raquo;
+                </a>
+
+            </div>
+
+        </nav>
 
     </section>
 
 </main>
 
 </body>
+
 </html>
