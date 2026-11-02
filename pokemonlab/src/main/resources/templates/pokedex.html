@@ -2,18 +2,13 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ポケモン図鑑</title>
 
     <link rel="stylesheet" th:href="@{/css/pokedex.css}">
     <link rel="stylesheet" th:href="@{/css/pokemon-type.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
 </head>
 
 <body>
@@ -24,20 +19,8 @@
 
         <div class="status-light"></div>
 
-        <div>
-            <p class="system-label">
-                POKÉMON DATABASE SYSTEM
-            </p>
-
-            <h1>ポケモン図鑑</h1>
-        </div>
-
-        <a
-            class="home-link"
-            th:href="@{/}"
-        >
-            ホーム
-        </a>
+        <div><h1>ポケモン図鑑</h1></div>
+        <a class="home-link" th:href="@{/}">ホーム</a>
 
     </header>
 
@@ -50,13 +33,7 @@
 
             <div class="search-panel-heading">
 
-                <div>
-                    <p class="search-panel-label">
-                        SEARCH TERMINAL
-                    </p>
-
-                    <h2>図鑑検索</h2>
-                </div>
+                <div><h2>図鑑検索</h2></div>
 
                 <span
                     class="search-status"
@@ -309,85 +286,57 @@
             th:unless="${pokemonList.isEmpty()}"
         >
 
-            <table>
 
-                <thead>
-                    <tr>
-                        <th>図鑑No</th>
-                        <th>世代</th>
-                        <th>名前</th>
-                        <th>タイプ1</th>
-                        <th>タイプ2</th>
-                    </tr>
-                </thead>
+        <table class="pokemon-table">
+            <thead>
+                <tr>
+                    <th class="col-number">図鑑No</th>
+                    <th class="col-generation">世代</th>
+                    <th class="col-name">名前</th>
+                    <th class="col-types">タイプ</th>
+                </tr>
+            </thead>
 
-                <tbody>
+            <tbody>
+                <tr th:each="pokemon : ${pokemonList}">
+                    <td class="col-number"
+                        th:text="${#numbers.formatInteger(pokemon.pokedexNo, 3)}">
+                        001
+                    </td>
 
-                    <tr th:each="pokemon : ${pokemonList}">
+                    <td class="col-generation"
+                        th:text="'第' + ${pokemon.generation} + '世代'">
+                        第1世代
+                    </td>
 
-                        <td
-                            th:text="${#numbers.formatInteger(
-                                pokemon.pokedexNo,
-                                3
-                            )}"
-                        >
-                            001
-                        </td>
+                    <td class="col-name">
+                        <a class="pokemon-name-link"
+                        th:href="@{/pokedex/{id}(id=${pokemon.id})}"
+                        th:text="${pokemon.name}">
+                            フシギダネ
+                        </a>
+                    </td>
 
-                        <td
-                            th:text="'第'
-                                + ${pokemon.generation}
-                                + '世代'"
-                        >
-                            第1世代
-                        </td>
-
-                        <td>
-                            <a
-                                class="pokemon-name-link"
-                                th:href="@{/pokedex/{id}(
-                                    id=${pokemon.id}
-                                )}"
-                                th:text="${pokemon.name}"
-                            >
-                                ポケモン名
-                            </a>
-                        </td>
-
-                        <td>
-                            <span
-                                class="type-badge"
+                    <td class="col-types">
+                        <div class="pokemon-types">
+                            <span class="type-badge"
                                 th:classappend="' type-' + ${pokemon.type1}"
-                                th:text="${pokemon.type1}"
-                            >
-                                タイプ1
+                                th:text="${pokemon.type1}">
+                                くさ
                             </span>
-                        </td>
 
-                        <td>
-                            <span
-                                class="type-badge"
+                            <span class="type-badge"
                                 th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
                                 th:classappend="' type-' + ${pokemon.type2}"
-                                th:text="${pokemon.type2}"
-                            >
-                                タイプ2
+                                th:text="${pokemon.type2}">
+                                どく
                             </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-                            <span
-                                class="no-type"
-                                th:unless="${pokemon.type2 != null
-                                    and !pokemon.type2.isBlank()}"
-                            >
-                                ―
-                            </span>
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
 
         </div>
 

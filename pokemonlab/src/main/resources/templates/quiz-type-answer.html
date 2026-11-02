@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>タイプクイズ回答結果 | PokemonLab</title>
+
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz-type.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+
+<main class="quiz-device answer-device type-answer-device">
+
+    <header class="quiz-header answer-header">
+
+        <div class="quiz-light"></div>
+
+        <div>
+            <h1>回答結果</h1>
+        </div>
+
+        <div class="question-counter">
+            第 <span th:text="${questionNumber}">1</span>
+            /
+            <span th:text="${totalQuestion}">10</span> 問
+        </div>
+
+    </header>
+
+    <section class="answer-screen">
+
+        <div class="answer-main">
+
+            <!-- 正解ポケモンの画像 -->
+            <div class="answer-pokemon-area">
+
+                <img class="answer-pokemon-image"
+                     th:src="@{/images/pokemon/{id}.png(id=${pokemon.id})}"
+                     th:alt="${pokemon.name}"
+                     onerror="
+                         this.style.display='none';
+                         this.nextElementSibling.style.display='grid';
+                     ">
+
+                <div class="answer-image-fallback">?</div>
+
+            </div>
+
+            <!-- 回答情報 -->
+            <div class="answer-data type-answer-data">
+
+                <section class="correct-pokemon-box">
+
+                    <div class="correct-label">
+                        正解：
+                    </div>
+
+                    <div class="correct-pokemon-name"
+                         th:text="${pokemon.name}">
+                        サクラビス
+                    </div>
+
+                    <div class="type-correct-value">
+                        タイプ：
+                        <strong th:text="${correctType.displayName}">
+                            みず
+                        </strong>
+                    </div>
+
+                </section>
+
+                <section class="selected-answer-box">
+
+                    あなたの回答：
+
+                    <strong th:text="${selectedType.displayName}">
+                        かくとう・はがね
+                    </strong>
+
+                </section>
+
+            </div>
+
+        </div>
+
+        <!-- 正誤メッセージ -->
+        <section class="answer-message"
+                 th:classappend="${correct}
+                     ? ' message-correct'
+                     : ' message-wrong'">
+
+            <span th:if="${correct}">
+                あたり　です！
+            </span>
+
+            <span th:unless="${correct}">
+                ばか　はずれです……
+            </span>
+
+        </section>
+
+    </section>
+
+    <footer class="answer-footer">
+
+        <div class="answer-score">
+
+            <span>SCORE</span>
+            <strong th:text="${score}">0</strong>
+            <span>/</span>
+            <span th:text="${totalQuestion}">10</span>
+
+        </div>
+
+        <form class="next-form"
+              th:action="@{/quiz/next}"
+              method="post">
+
+            <button class="next-button"
+                    type="submit"
+                    th:text="${questionNumber == totalQuestion}
+                        ? '結果を見る ▶'
+                        : 'つぎへすすむ ▶'">
+                つぎへすすむ ▶
+            </button>
+
+        </form>
+
+    </footer>
+
+</main>
+
+</body>
+</html>

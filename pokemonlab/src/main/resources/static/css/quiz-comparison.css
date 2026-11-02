@@ -1,0 +1,495 @@
+/* 比較クイズ専用。既存 quiz.css のスタイルは変更しない */
+.comparison-device { width: min(1080px, 100%); }
+.comparison-device .quiz-header { flex-wrap: wrap; }
+.comparison-intro { text-align: center; margin-bottom: 24px; }
+.comparison-intro h2, .comparison-result-heading { color: var(--green); margin: 0 0 10px; }
+.comparison-intro p { color: var(--white); margin: 0; line-height: 1.7; }
+.comparison-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.comparison-choice { min-width: 0; margin: 0; }
+.comparison-choice-button, .comparison-reveal-card {
+    width: 100%; min-width: 0; min-height: 280px; padding: 16px 10px;
+    border: 2px solid #647b6c; border-radius: 14px;
+    background: linear-gradient(180deg, #243c31, #101e18);
+    color: #fff; display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between; gap: 10px;
+    text-align: center;
+}
+.comparison-choice-button { cursor: pointer; font: inherit; transition: transform .15s, border-color .15s; }
+.comparison-choice-button:hover, .comparison-choice-button:focus-visible { border-color: var(--green); transform: translateY(-3px); }
+.comparison-image-wrap { width: 100%; height: 145px; display: grid; place-items: center; }
+.comparison-image-wrap img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+.comparison-image-fallback { display: none; place-items: center; font-size: 58px; font-weight: bold; color: var(--yellow); }
+.comparison-pokemon-name { display: block; font-size: 18px; font-weight: bold; overflow-wrap: anywhere; }
+.comparison-select-label { color: var(--green); font-size: 12px; font-weight: bold; }
+.comparison-result-screen { padding-top: 22px; }
+.comparison-verdict { border: 2px solid #8eaa9b; border-radius: 12px; background: #192c23; padding: 16px; margin-bottom: 22px; text-align: center; }
+.comparison-verdict strong { font-size: 27px; }
+.comparison-verdict p { margin: 8px 0 0; line-height: 1.7; }
+.verdict-correct { border-color: #69f5a3; }
+.verdict-wrong { border-color: #ff9999; }
+.comparison-result-heading { font-size: 21px; }
+.comparison-reveal-card { min-height: 300px; }
+.comparison-reveal-card.is-correct { border: 3px solid #7dffad; box-shadow: 0 0 0 2px rgba(125,255,173,.2); }
+.comparison-reveal-card.is-selected:not(.is-correct) { border: 3px solid #ffc16e; }
+.comparison-card-labels { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; min-height: 25px; }
+.comparison-tag { border-radius: 6px; padding: 3px 7px; font-size: 11px; font-weight: bold; }
+.tag-correct { background: #84ffc0; color: #092b1a; }
+.tag-selected { background: #ffce79; color: #322008; }
+.comparison-measurement { color: var(--yellow); font-size: 17px; }
+.comparison-measurement strong { font-size: 27px; margin-right: 4px; }
+.comparison-answer-footer { padding: 14px 24px 18px; grid-template-columns: minmax(180px, 1fr) minmax(220px, 1.2fr); }
+@media (max-width: 760px) { .comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .comparison-answer-footer { grid-template-columns: 1fr; } }
+@media (max-width: 430px) { .comparison-device { padding: 12px; } .comparison-device .quiz-screen { padding: 12px; } .comparison-grid { gap: 8px; } .comparison-choice-button, .comparison-reveal-card { padding: 10px 6px; min-height: 245px; } .comparison-image-wrap { height: 115px; } .comparison-pokemon-name { font-size: 15px; } }
+
+/* ========================================
+   比較クイズ：画像・名前・選択文言の重なり防止
+   ======================================== */
+
+/* 選択肢のフォーム */
+.comparison-choice {
+    min-width: 0;
+    margin: 0;
+}
+
+/* カード全体を縦3段に固定 */
+.comparison-choice-button {
+    width: 100%;
+    height: 100%;
+    min-height: 270px;
+    padding: 12px 8px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 155px minmax(48px, auto) 30px;
+    align-items: center;
+    justify-items: center;
+    gap: 8px;
+
+    overflow: hidden;
+}
+
+/* 画像専用の領域 */
+.comparison-image-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+
+    width: 100%;
+    height: 155px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 画像を領域内に収める */
+.comparison-image-wrap img {
+    display: block;
+    position: static;
+
+    width: 100%;
+    height: 100%;
+    max-width: 155px;
+    max-height: 155px;
+
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+/* 名前専用の領域 */
+.comparison-pokemon-name {
+    position: static;
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    margin: 0;
+    padding: 0 4px;
+
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.4;
+    text-align: center;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* 選択文言専用の領域 */
+.comparison-select-label {
+    position: static;
+    display: block;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    color: #8dffc7;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* スマホ表示 */
+@media (max-width: 680px) {
+    .comparison-choice-button {
+        min-height: 230px;
+        grid-template-rows: 120px minmax(48px, auto) 30px;
+    }
+
+    .comparison-image-wrap {
+        height: 120px;
+    }
+
+    .comparison-image-wrap img {
+        max-width: 120px;
+        max-height: 120px;
+    }
+}
+
+/* ========================================
+   比較クイズ：カード内テキスト調整
+======================================== */
+
+.comparison-choice-button {
+    grid-template-rows: 155px minmax(58px, auto) 38px;
+    gap: 10px;
+    padding: 14px 10px;
+}
+
+/* ポケモン名 */
+.comparison-pokemon-name {
+    width: 100%;
+    min-height: 58px;
+    padding: 4px 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: clamp(14px, 1.5vw, 17px);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+    text-align: center;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* 選択文言 */
+.comparison-select-label {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(98, 255, 172, 0.1);
+    border: 1px solid rgba(141, 255, 199, 0.35);
+    border-radius: 7px;
+
+    color: #a6ffd3;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+/* 狭い画面でも読める文字サイズ */
+@media (max-width: 680px) {
+    .comparison-choice-button {
+        grid-template-rows: 120px minmax(58px, auto) 38px;
+        gap: 8px;
+        padding: 10px 6px;
+    }
+
+    .comparison-pokemon-name {
+        font-size: 14px;
+    }
+
+    .comparison-select-label {
+        font-size: 11px;
+        padding: 6px 2px;
+    }
+}
+
+/* ========================================
+   比較クイズ：回答結果画面
+   白いマス目デザイン
+======================================== */
+
+.comparison-answer-screen {
+    padding: 26px 24px 30px;
+}
+
+/* 正誤判定 */
+.comparison-answer-verdict {
+    margin: 0 0 22px;
+    min-height: 0;
+    padding: 16px 20px;
+    display: block;
+    text-align: center;
+}
+
+.comparison-answer-verdict strong {
+    font-size: clamp(22px, 3vw, 30px);
+}
+
+.comparison-answer-verdict p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+/* 見出し */
+.comparison-answer-heading {
+    margin: 0 0 14px;
+    color: #181818;
+    font-size: 22px;
+}
+
+/* 4匹のカード */
+.comparison-answer-grid {
+    gap: 12px;
+}
+
+.comparison-answer-grid .comparison-reveal-card {
+    min-height: 290px;
+    padding: 12px 8px;
+
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid #333;
+    border-radius: 0;
+
+    color: #111;
+
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+/* 正解カード */
+.comparison-answer-grid .comparison-reveal-card.is-correct {
+    border: 3px solid #25a85a;
+    box-shadow: 4px 4px 0 rgba(37, 168, 90, 0.22);
+}
+
+/* 自分が選んだカード（不正解時） */
+.comparison-answer-grid .comparison-reveal-card.is-selected:not(.is-correct) {
+    border: 3px solid #e0a12c;
+    box-shadow: 4px 4px 0 rgba(224, 161, 44, 0.22);
+}
+
+/* カードの名前 */
+.comparison-answer-grid .comparison-pokemon-name {
+    color: #111;
+    font-size: clamp(13px, 1.5vw, 17px);
+}
+
+/* 数値 */
+.comparison-answer-grid .comparison-measurement {
+    color: #c11212;
+    font-size: 17px;
+}
+
+.comparison-answer-grid .comparison-measurement strong {
+    font-size: 27px;
+}
+
+/* ラベル */
+.comparison-answer-grid .tag-correct {
+    background: #25a85a;
+    color: white;
+}
+
+.comparison-answer-grid .tag-selected {
+    background: #f3bc54;
+    color: #211500;
+}
+
+/* フッター */
+.comparison-answer-footer {
+    grid-template-columns: minmax(180px, 1fr)
+                           minmax(220px, 1.2fr);
+    padding: 12px 24px 18px;
+}
+
+/* ========================================
+   スマホ対応
+======================================== */
+
+@media (max-width: 760px) {
+
+    .comparison-answer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .comparison-answer-footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 430px) {
+
+    .comparison-answer-screen {
+        padding: 18px 12px 22px;
+    }
+
+    .comparison-answer-verdict {
+        padding: 12px 8px;
+    }
+
+    .comparison-answer-verdict p {
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .comparison-answer-heading {
+        font-size: 18px;
+    }
+
+    .comparison-answer-grid {
+        gap: 8px;
+    }
+
+    .comparison-answer-grid .comparison-reveal-card {
+        min-height: 240px;
+        padding: 8px 4px;
+    }
+
+    .comparison-answer-grid .comparison-image-wrap {
+        height: 115px;
+    }
+
+    .comparison-answer-grid .comparison-pokemon-name {
+        font-size: 13px;
+    }
+
+    .comparison-answer-grid .comparison-measurement strong {
+        font-size: 22px;
+    }
+}
+/* 比較クイズ回答結果：スマホ向けコンパクト表示 */
+@media (max-width: 600px) {
+
+    .comparison-answer-screen {
+        padding: 12px 10px 16px;
+    }
+
+    .comparison-answer-verdict {
+        padding: 10px 8px;
+        margin-bottom: 12px;
+    }
+
+    .comparison-answer-verdict strong {
+        font-size: 20px;
+    }
+
+    .comparison-answer-verdict p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .comparison-answer-heading {
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .comparison-answer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .comparison-answer-grid .comparison-reveal-card {
+        min-height: 0;
+        padding: 8px 5px;
+        gap: 5px;
+    }
+
+    .comparison-answer-grid .comparison-image-wrap {
+        height: 90px;
+    }
+
+    .comparison-answer-grid .comparison-image-wrap img {
+        max-width: 100%;
+        max-height: 90px;
+        object-fit: contain;
+    }
+
+    .comparison-answer-grid .comparison-pokemon-name {
+        font-size: 12px;
+        line-height: 1.4;
+        min-height: 34px;
+    }
+
+    .comparison-answer-grid .comparison-measurement {
+        margin-top: 4px;
+    }
+
+    .comparison-answer-grid .comparison-measurement strong {
+        font-size: 19px;
+    }
+
+    .comparison-answer-footer {
+        padding: 10px;
+    }
+}
+/* ========================================
+   スマホ用：クイズヘッダー調整
+======================================== */
+
+@media (max-width: 600px) {
+
+    .quiz-header {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* 緑のランプ */
+    .quiz-header .quiz-light {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    /* 問題タイトル */
+    .quiz-header > div:nth-child(2) {
+        grid-column: 2 / 4;
+        grid-row: 1;
+        min-width: 0;
+    }
+
+    .quiz-header h1 {
+        margin: 0;
+        font-size: clamp(14px, 3.5vw, 20px);
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    /* 問題数 */
+    .quiz-header .question-counter {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+        white-space: nowrap;
+        min-width: 0;
+    }
+
+    /* クイズ選択ボタン */
+    .quiz-header > a {
+        grid-column: 3;
+        grid-row: 2;
+        justify-self: end;
+
+        white-space: nowrap;
+        flex-shrink: 0;
+
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+}

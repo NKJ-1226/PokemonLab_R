@@ -836,3 +836,220 @@ td a:hover {
         align-items: flex-start;
     }
 }
+
+/* ========================================
+   図鑑一覧：タイプ2個をまとめて表示
+======================================== */
+
+.pokemon-types {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ========================================
+   図鑑一覧：スマホ向けコンパクト表示
+======================================== */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 6px;
+    }
+
+    .pokedex-shell {
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .pokedex-screen {
+        padding: 10px;
+    }
+
+    /* ヘッダー */
+    .pokedex-header {
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 2px;
+    }
+
+    .pokedex-header h1 {
+        font-size: 22px;
+    }
+
+    .status-light {
+        width: 18px;
+        height: 18px;
+    }
+
+    .home-link {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    /* 検索パネル */
+    .search-panel {
+        margin-bottom: 16px;
+        padding: 12px;
+    }
+
+    .search-panel-heading {
+        gap: 8px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .search-panel-heading h2 {
+        font-size: 17px;
+    }
+
+    .search-panel-label {
+        font-size: 9px;
+    }
+
+    .search-status {
+        font-size: 10px;
+    }
+
+    /* 名前は1行、世代とタイプは横並び */
+    .search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .search-field {
+        min-width: 0;
+        gap: 5px;
+    }
+
+    .search-field-name {
+        grid-column: 1 / -1;
+    }
+
+    .search-field label {
+        font-size: 12px;
+    }
+
+    .search-field input,
+    .search-field select {
+        min-width: 0;
+        height: 40px;
+        padding: 0 8px;
+        font-size: 13px;
+    }
+
+    /* ボタンは横並び */
+    .search-actions {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .search-button,
+    .reset-button {
+        min-width: 0;
+        width: 100%;
+        height: 40px;
+        padding: 0 8px;
+        font-size: 13px;
+    }
+
+    /* 一覧見出し */
+    .screen-heading {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .screen-heading h2 {
+        font-size: 19px;
+    }
+
+    .display-range {
+        font-size: 11px;
+    }
+
+    .total-count {
+        padding: 6px 8px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    /* テーブル */
+    .table-wrapper {
+        max-height: none;
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+
+    .pokemon-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .pokemon-table th,
+    .pokemon-table td {
+        padding: 9px 5px;
+        font-size: 12px;
+        vertical-align: middle;
+    }
+
+    /* 世代列はスマホでは非表示 */
+    .pokemon-table .col-generation {
+        display: none;
+    }
+
+    .pokemon-table .col-number {
+        width: 19%;
+        white-space: nowrap;
+    }
+
+    .pokemon-table .col-name {
+        width: 37%;
+    }
+
+    .pokemon-table .col-types {
+        width: 44%;
+    }
+
+    .pokemon-name-link {
+        font-size: 12px;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .pokemon-types {
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .pokemon-table .type-badge {
+        min-width: 0;
+        padding: 4px 6px;
+        font-size: 10px;
+        line-height: 1.3;
+        white-space: nowrap;
+    }
+
+    /* ページネーション */
+    .pagination-area {
+        margin-top: 16px;
+        padding-top: 14px;
+    }
+
+    .pagination {
+        gap: 4px;
+    }
+
+    .page-button {
+        min-width: 32px;
+        height: 34px;
+        padding: 0 7px;
+        font-size: 11px;
+    }
+
+    .page-move {
+        min-width: 42px;
+    }
+}

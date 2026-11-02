@@ -316,3 +316,413 @@ a.evolution-card:hover {
         gap: 8px;
     }
 }
+
+/* ========================================
+   図鑑詳細：スマホ向けコンパクト表示
+======================================== */
+
+@media (max-width: 720px) {
+
+    /* 端末の外枠と画面 */
+    body {
+        padding: 8px;
+    }
+
+    .device {
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+    .screen {
+        padding: 10px;
+    }
+
+    /* ヘッダー */
+    .device-header {
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 2px;
+    }
+
+    .device-header h1 {
+        font-size: clamp(18px, 5vw, 24px);
+    }
+
+    .status-light {
+        width: 18px;
+        height: 18px;
+    }
+
+    .list-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    /* 画像と基本情報を横並びに */
+    .pokemon-summary {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: 10px;
+        margin-bottom: 14px;
+        align-items: stretch;
+    }
+
+    .image-panel {
+        min-height: 0;
+        padding: 8px;
+    }
+
+    .pokemon-sprite {
+        width: 100%;
+        height: auto;
+        max-height: 160px;
+        aspect-ratio: 1;
+        object-fit: contain;
+    }
+
+    .image-fallback {
+        width: 100%;
+        height: 120px;
+        font-size: 48px;
+    }
+
+    /* 基本情報 */
+    .identity-panel {
+        padding: 10px;
+    }
+
+    .dex-number {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+
+    .identity-panel h2 {
+        margin: 6px 0 10px;
+        font-size: clamp(17px, 4.5vw, 25px);
+        line-height: 1.25;
+    }
+
+    .types {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+
+    .type-badge {
+        min-width: 0;
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .identity-panel > p:not(.dex-number) {
+        margin: 8px 0;
+        font-size: 12px;
+    }
+
+    .pokemon-profile {
+        margin-top: 8px;
+        padding: 6px;
+    }
+
+    .profile-row {
+        gap: 4px;
+        padding: 6px 0;
+    }
+
+    .profile-label,
+    .profile-row strong {
+        font-size: 11px;
+    }
+
+    /* 種族値 */
+    .stats-panel {
+        padding: 12px;
+    }
+
+    .stats-title {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .stats-title h3,
+    .stats-title strong {
+        font-size: 15px;
+    }
+
+    .stat-row {
+        grid-template-columns: 74px minmax(0, 1fr) 30px;
+        gap: 8px;
+        margin: 8px 0;
+        font-size: 12px;
+    }
+
+    .stat-track {
+        height: 12px;
+    }
+
+    /* 進化ライン */
+    .evolution-panel {
+        margin-top: 14px;
+        padding: 12px;
+    }
+
+    .evolution-title {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .evolution-title h3 {
+        font-size: 15px;
+    }
+
+    .evolution-content {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .evolution-group {
+        width: auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .evolution-cards {
+        gap: 4px;
+    }
+
+    .evolution-card {
+        flex-direction: column;
+        gap: 4px;
+        padding: 4px;
+    }
+
+    .evolution-card img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .evolution-card strong {
+        max-width: 90px;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .evolution-arrow {
+        margin: 0 4px;
+        font-size: 0;
+    }
+
+    .evolution-arrow::after {
+        content: "▶";
+        font-size: 14px;
+    }
+
+    /* 前後移動 */
+    .navigation {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .nav-button {
+        min-width: 0;
+        min-height: 54px;
+        padding: 8px;
+        gap: 4px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nav-button strong {
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+/* ========================================
+   スマホ版：種族値と進化ラインを横並び
+======================================== */
+
+@media (max-width: 720px) {
+
+    /* 画面全体を2列のグリッドに */
+    .screen {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+    }
+
+    /* 画像＋基本情報は横幅いっぱい */
+    .pokemon-summary {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+    }
+
+    /* 左側：種族値 */
+    .stats-panel {
+        grid-column: 1;
+        min-width: 0;
+        padding: 8px;
+    }
+
+    /* 右側：進化ライン */
+    .evolution-panel {
+        grid-column: 2;
+        min-width: 0;
+        margin-top: 0;
+        padding: 8px;
+    }
+
+    /* 種族値の見出し */
+    .stats-title {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .stats-title h3,
+    .stats-title strong {
+        font-size: 12px;
+    }
+
+    /* 狭いカラム内でもバーを表示 */
+    .stat-row {
+        grid-template-columns: 54px minmax(0, 1fr) 24px;
+        gap: 4px;
+        margin: 10px 0;
+        font-size: 10px;
+    }
+
+    .stat-track {
+        height: 10px;
+    }
+
+    /* 進化ラインは縦並びに戻す */
+    .evolution-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .evolution-group {
+        width: 100%;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .evolution-arrow {
+        font-size: 13px;
+        margin: 2px 0;
+    }
+
+    .evolution-arrow::after {
+        content: none;
+    }
+
+    .evolution-cards {
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .evolution-card {
+        flex-direction: row;
+        gap: 4px;
+        padding: 2px;
+    }
+
+    .evolution-card img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .evolution-card strong {
+        font-size: 10px;
+        text-align: left;
+    }
+
+    .evolution-title {
+        margin-bottom: 12px;
+    }
+
+    .evolution-title h3 {
+        font-size: 12px;
+    }
+}
+/* ========================================
+   種族値 ＋ 進化ライン：PC・スマホ共通
+======================================== */
+
+/* PC版 */
+.screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 20px;
+    align-items: start;
+}
+
+/* 画像＋基本情報は横幅いっぱい */
+.pokemon-summary {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+/* 左側：種族値 */
+.stats-panel {
+    grid-column: 1;
+    min-width: 0;
+}
+
+/* 右側：進化ライン */
+.evolution-panel {
+    grid-column: 2;
+    min-width: 0;
+    margin-top: 0;
+}
+
+/* ========================================
+   スマホ版
+======================================== */
+
+@media (max-width: 720px) {
+
+    .screen {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .stats-panel,
+    .evolution-panel {
+        padding: 8px;
+    }
+}
+/* スマホ版：分岐進化を2列表示 */
+@media (max-width: 720px) {
+
+    .evolution-cards:has(> :nth-child(2)) {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 4px;
+        width: 100%;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card {
+        min-width: 0;
+        flex-direction: column;
+        gap: 3px;
+        padding: 4px 2px;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card strong {
+        max-width: 100%;
+        font-size: 10px;
+        text-align: center;
+    }
+}

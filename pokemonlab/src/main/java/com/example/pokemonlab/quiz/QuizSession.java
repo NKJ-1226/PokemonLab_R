@@ -67,9 +67,16 @@ public class QuizSession {
 
     public void moveNext() {
         currentIndex++;
+        selectedTypeIndex = null;
+        typeAnswerSubmitted = false;
     }
 
     public boolean isFinished() {
+
+        if (mode == QuizMode.TYPE_QUIZ) {
+            return currentIndex >= typeQuestions.size();
+        }
+
         return currentIndex >= questions.size();
     }
 
@@ -95,5 +102,39 @@ public class QuizSession {
 
     public void setWrongPokemonIds(List<Integer> wrongPokemonIds) {
         this.wrongPokemonIds = wrongPokemonIds;
-    }    
+    }
+
+    // タイプクイズ用
+    private List<TypeQuizQuestion> typeQuestions = new ArrayList<>();
+    private Integer selectedTypeIndex;
+    private boolean typeAnswerSubmitted;
+
+    public List<TypeQuizQuestion> getTypeQuestions() {
+        return typeQuestions;
+    }
+
+    public void setTypeQuestions(List<TypeQuizQuestion> typeQuestions) {
+        this.typeQuestions = typeQuestions;
+    }
+
+    public TypeQuizQuestion getCurrentTypeQuestion() {
+        return typeQuestions.get(currentIndex);
+    }
+
+    public Integer getSelectedTypeIndex() {
+        return selectedTypeIndex;
+    }
+
+    public void setSelectedTypeIndex(Integer selectedTypeIndex) {
+        this.selectedTypeIndex = selectedTypeIndex;
+    }
+
+    public boolean isTypeAnswerSubmitted() {
+        return typeAnswerSubmitted;
+    }
+
+    public void setTypeAnswerSubmitted(boolean typeAnswerSubmitted) {
+        this.typeAnswerSubmitted = typeAnswerSubmitted;
+    }
+
 }

@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+
+    <title>タイプクイズ | PokemonLab</title>
+
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz-type.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+
+<main class="quiz-device">
+
+    <header class="quiz-header">
+
+        <div class="quiz-light"></div>
+
+        <div>
+            <h1>このポケモンのタイプは？</h1>
+        </div>
+
+        <div class="question-counter">
+            第
+            <span th:text="${questionNumber}">1</span>
+            /
+            <span th:text="${totalQuestion}">10</span>
+            問
+        </div>
+
+        <a th:href="@{/quiz}">クイズ選択画面に戻る</a>
+
+    </header>
+
+    <section class="quiz-screen">
+
+        <!-- ポケモン表示パネル -->
+        <div class="stats-panel type-pokemon-panel">
+
+            <div class="stats-title">
+                <h2>タイプクイズ</h2>
+            </div>
+
+            <div class="type-pokemon-area">
+
+                <img class="type-pokemon-image"
+                     th:src="@{/images/pokemon/{id}.png(id=${pokemon.id})}"
+                     th:alt="${pokemon.name}"
+                     onerror="
+                         this.style.display='none';
+                         this.nextElementSibling.style.display='grid';
+                     ">
+
+                <div class="type-image-fallback">?</div>
+
+                <h3 th:text="${pokemon.name}">
+                    リザードン
+                </h3>
+
+                <p>正しいと思うタイプを選んでね</p>
+
+            </div>
+
+        </div>
+
+        <!-- 4択 -->
+        <div class="choices type-choices">
+
+            <form th:each="choice, stat : ${choices}"
+                  th:action="@{/quiz/answer}"
+                  method="post">
+
+                <input type="hidden"
+                       name="selectedTypeIndex"
+                       th:value="${stat.index}">
+
+                <button class="choice-button"
+                        type="submit"
+                        th:text="${choice.displayName}">
+                    ほのお・ひこう
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -813,3 +813,8 @@ body {
         padding: 12px 16px 18px;
     }
 }
+/* クイズ選択ボタンの折り返し防止 */
+.quiz-header > a {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
