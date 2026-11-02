@@ -22,7 +22,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
 
-        // Pokemonテーブルからポケモンのデータを全権取得
+        // Pokemonテーブルからポケモンのデータを全件取得
         List<Pokemon> pokemonList = pokemonRepository.findAll();
 
         // ランダムで1匹取得

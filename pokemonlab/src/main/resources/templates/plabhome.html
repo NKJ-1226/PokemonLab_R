@@ -58,7 +58,18 @@
                 </div>
 
             </p>
-            <p>ぶんるい：ねずみポケモン</p>
+            <p>
+                ぶんるい：
+                <span th:text="${pokemon.category}"></span>
+            </p>
+            <p>
+                高さ：
+                <span th:text="${pokemon.height}"></span> m</p>
+            </p>
+            <p>
+                重さ：
+                <span th:text="${pokemon.weight}"></span> kg</p>
+            </p>
 
         </div>
 
