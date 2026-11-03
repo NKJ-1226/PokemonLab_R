@@ -104,72 +104,91 @@ public class PokedexController {
      * /pokedex?generation=1
      * /pokedex?type=でんき
      *
-     * @param page 表示するページ番号（0から開始）
+     * @param page 表示するページ番号の文字列（0から開始）
      * @param name 名前の検索文字列
-     * @param generation 世代の検索条件
+     * @param generation 世代の検索条件（文字列）
      * @param type タイプの検索条件
      * @param model 画面に渡すデータ
      * @return 図鑑一覧のテンプレート名
      */
     @GetMapping("/pokedex")
     public String pokedex(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "0") String page,
             @RequestParam(defaultValue = "") String name,
-            @RequestParam(required = false) Integer generation,
+            @RequestParam(defaultValue = "") String generation,
             @RequestParam(defaultValue = "") String type,
             Model model) {
 
-        // 検索文字列の前後の空白を除去する
+        // URLを直接編集した場合も、サーバー側で検索条件を検証する
+        List<String> validationWarnings = new ArrayList<>();
         String normalizedName = normalizeText(name);
         String normalizedType = normalizeText(type);
+        String normalizedGeneration = normalizeText(generation);
 
-        // 負のページ番号が指定された場合は先頭ページに補正する
-        int requestedPage = Math.max(page, 0);
+        // 世代の選択肢はDBから取得する将来の世代追加にも対応する
+        List<Integer> availableGenerations = pokemonRepository.findAvailableGenerations();
 
-        // 名前・世代・タイプの検索条件を作成する
-        Specification<Pokemon> specification =
-                createSearchSpecification(
-                        normalizedName,
-                        generation,
-                        normalizedType);
+        Integer validGeneration = null;
+        if (StringUtils.hasText(normalizedGeneration)) {
+            try {
+                validGeneration = Integer.valueOf(normalizedGeneration);
+            } catch (NumberFormatException ex) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "指定された世代は無効です！");
+            }
+            if (!availableGenerations.contains(validGeneration)) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "指定された世代は存在しません！");
+            }
+        }
 
-        // 図鑑番号の昇順で並べ、同じ番号ならIDの昇順にする
+        // タイプはJavaで定義した18種類のみを許可する
+        if (StringUtils.hasText(normalizedType)
+                && !POKEMON_TYPES.contains(normalizedType)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "指定されたタイプは存在しません！");
+        }
+
+        // 数値以外、intの範囲外、負数は先頭ページへ補正する
+        int requestedPage = 0;
+        boolean invalidPage = false;
+        try {
+            requestedPage = Integer.parseInt(normalizeText(page));
+            if (requestedPage < 0) {
+                invalidPage = true;
+                requestedPage = 0;
+            }
+        } catch (NumberFormatException ex) {
+            invalidPage = true;
+        }
+
+        Specification<Pokemon> specification = createSearchSpecification(
+                normalizedName, validGeneration, normalizedType);
         Sort sort = Sort.by(
                 Sort.Order.asc("pokedexNo"),
                 Sort.Order.asc("id"));
 
-        Pageable pageable = PageRequest.of(
-                requestedPage,
-                PAGE_SIZE,
-                sort);
+        // まず先頭ページを取得し、全ページ数を把握する
+        // 不正な巨大ページ番号でDBに大きなOFFSETを渡さない
+        Page<Pokemon> pokemonPage = pokemonRepository.findAll(
+                specification, PageRequest.of(0, PAGE_SIZE, sort));
 
-        // 検索条件に一致するポケモンをページ単位で取得する
-        Page<Pokemon> pokemonPage =
-                pokemonRepository.findAll(specification, pageable);
+        if (requestedPage >= pokemonPage.getTotalPages()
+                && requestedPage != 0) {
+            invalidPage = true;
+            requestedPage = 0;
+        }
 
-        /*
-         * 検索条件の変更などで存在しないページ番号が指定された場合、
-         * 検索結果の最終ページに補正する
-         *
-         * 例：
-         * 全件表示で50ページ目を閲覧
-         * → 第1世代に絞り込む
-         * → 50ページ目が存在しない
-         * → 絞り込み結果の最終ページを表示
-         */
-        if (pokemonPage.getTotalPages() > 0
-                && requestedPage >= pokemonPage.getTotalPages()) {
+        if (invalidPage) {
+            validationWarnings.add(
+                    "指定されたページは無効です！先頭ページを表示しました");
+        }
 
-            requestedPage = pokemonPage.getTotalPages() - 1;
-
-            pageable = PageRequest.of(
-                    requestedPage,
-                    PAGE_SIZE,
-                    sort);
-
+        // 有効なページ番号の場合のみ該当ページを取得する
+        if (requestedPage > 0) {
             pokemonPage = pokemonRepository.findAll(
                     specification,
-                    pageable);
+                    PageRequest.of(requestedPage, PAGE_SIZE, sort));
         }
 
         int currentPage = pokemonPage.getNumber();
@@ -192,7 +211,7 @@ public class PokedexController {
         // 検索条件が1つでも指定されているかを判定する
         boolean searchActive =
                 StringUtils.hasText(normalizedName)
-                || generation != null
+                || validGeneration != null
                 || StringUtils.hasText(normalizedType);
 
         // 図鑑一覧とページネーションに必要な情報
@@ -206,10 +225,12 @@ public class PokedexController {
 
         // 検索フォームに現在の入力内容を戻すための情報
         model.addAttribute("searchName", normalizedName);
-        model.addAttribute("selectedGeneration", generation);
+        model.addAttribute("selectedGeneration", validGeneration);
+        model.addAttribute("availableGenerations", availableGenerations);
         model.addAttribute("selectedType", normalizedType);
         model.addAttribute("pokemonTypes", POKEMON_TYPES);
         model.addAttribute("searchActive", searchActive);
+        model.addAttribute("validationWarnings", validationWarnings);
 
         return "pokedex";
     }
@@ -388,7 +409,7 @@ public class PokedexController {
                 .orElseThrow(() ->
                         new ResponseStatusException(
                                 HttpStatus.NOT_FOUND,
-                                "指定されたポケモンが見つかりません。ID=" + id)
+                                "指定されたポケモンが見つかりませんID=" + id)
                 );
 
         model.addAttribute("pokemon", pokemon);

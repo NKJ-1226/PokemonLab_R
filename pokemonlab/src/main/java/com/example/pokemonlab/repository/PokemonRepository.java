@@ -16,6 +16,10 @@ import com.example.pokemonlab.entity.Pokemon;
  */
 public interface PokemonRepository extends JpaRepository<Pokemon, Integer>,JpaSpecificationExecutor<Pokemon> {
 
+    /** DBに登録されている世代番号を重複なし・昇順で取得する */
+    @Query("SELECT DISTINCT p.generation FROM Pokemon p WHERE p.generation IS NOT NULL ORDER BY p.generation")
+    List<Integer> findAvailableGenerations();
+
     /**
      * 指定IDより小さいIDを持つ直前のポケモンを取得する
      *

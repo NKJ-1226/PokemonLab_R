@@ -56,7 +56,7 @@
 
                 <!--
                     検索を実行するときは、
-                    必ず1ページ目へ戻す。
+                    必ず1ページ目へ戻す
                 -->
                 <input
                     type="hidden"
@@ -99,7 +99,7 @@
 
                         <option
                             th:each="generationNumber :
-                                ${#numbers.sequence(1, 9)}"
+                                ${availableGenerations}"
                             th:value="${generationNumber}"
                             th:text="'第'
                                 + ${generationNumber}
@@ -167,6 +167,16 @@
 
             </form>
 
+        </section>
+
+        <!-- URLパラメータが不正な場合の警告 -->
+        <section th:if="${!validationWarnings.isEmpty()}"
+                 role="alert"
+                 aria-live="polite"
+                 style="margin: 12px 0; padding: 12px 16px; border: 1px solid #f5c16c; border-radius: 8px; background: #3b2a13; color: #ffe6ad;">
+            <p th:each="warning : ${validationWarnings}"
+               th:text="${warning}"
+               style="margin: 4px 0;">検索条件を補正しました</p>
         </section>
 
         <!-- =====================================
@@ -261,12 +271,12 @@
         >
 
             <p class="empty-message-title">
-                該当するポケモンが見つかりませんでした。
+                該当するポケモンが見つかりませんでした
             </p>
 
             <p class="empty-message-text">
                 名前・世代・タイプの条件を変更して、
-                もう一度検索してください。
+                もう一度検索してください
             </p>
 
             <a
