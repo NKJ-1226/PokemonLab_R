@@ -1,4 +1,3 @@
-
 package com.example.pokemonlab.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -14,6 +13,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * Spring Securityのアクセス制御を設定するクラス
  *
  * ホーム画面・図鑑・クイズなどを一般公開する。
+ * faviconなどの静的リソースも認証不要にする。
  * H2 Consoleは本番環境では利用できないようにする。
  */
 @Configuration
@@ -24,7 +24,7 @@ public class SecurityConfig {
             HttpSecurity http,
             Environment environment) throws Exception {
 
-        // 本番環境ではH2 Consoleを許可しない
+        // H2 Consoleの有効・無効を設定から取得
         boolean h2ConsoleEnabled = environment.getProperty(
                 "spring.h2.console.enabled",
                 Boolean.class,
@@ -38,12 +38,14 @@ public class SecurityConfig {
                     auth.requestMatchers(
                             "/",
                             "/pokedex",
+                            "/pokedex/**",
                             "/quiz/**",
                             "/ranking",
-                            "/pokedex/**",
                             "/css/**",
                             "/js/**",
                             "/images/**",
+                            "/favicon.ico",
+                            "/webjars/**",
                             "/error"
                     ).permitAll();
 
