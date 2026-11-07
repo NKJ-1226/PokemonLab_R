@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>404 | PokemonLab_R</title>
+
+    <style>
+        /* ページ全体 */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #e8f0f1;
+            font-family: Arial, "Meiryo", sans-serif;
+            color: #304f5d;
+        }
+
+        /* ポケギア風の外枠 */
+        .error-frame {
+            width: 100%;
+            max-width: 520px;
+            padding: 18px;
+            background: #d8e5e8;
+            border: 4px solid #637e89;
+            border-radius: 18px;
+            box-shadow: 0 8px 0 #a5b9bf;
+        }
+
+        /* メッセージ表示部分 */
+        .error-screen {
+            padding: 35px 24px;
+            text-align: center;
+            background: #f9fcf6;
+            border: 3px solid #91a5a8;
+            border-radius: 12px;
+        }
+
+        .system-label {
+            margin: 0;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: #476874;
+        }
+
+        .error-code {
+            margin: 14px 0 6px;
+            font-size: 86px;
+            line-height: 1;
+            color: #325e72;
+        }
+
+        .error-title {
+            margin: 18px 0;
+            font-size: 23px;
+        }
+
+        .error-message {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #586c73;
+        }
+
+        .hint {
+            margin-top: 25px;
+            padding: 14px;
+            background: #e6eeee;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* 画面下部のボタン */
+        .error-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .error-button {
+            flex: 1;
+            display: block;
+            padding: 14px 10px;
+            border: 2px solid #829aa2;
+            border-radius: 9px;
+            background: #f9fcf6;
+            color: #476874;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .error-button.primary {
+            background: #547f8d;
+            border-color: #547f8d;
+            color: white;
+        }
+
+        .error-button:hover {
+            background: #c8dadd;
+        }
+
+        .error-button.primary:hover {
+            background: #426b78;
+        }
+
+        .error-button:focus-visible {
+            outline: 3px solid #e3a94d;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 420px) {
+            .error-screen {
+                padding: 26px 14px;
+            }
+
+            .error-code {
+                font-size: 68px;
+            }
+
+            .error-title {
+                font-size: 19px;
+            }
+
+            .error-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="error-frame">
+
+        <section class="error-screen">
+
+            <h1 class="error-code">404</h1>
+
+            <h2 class="error-title">
+                アクセスしようとしたページは表示できませんでした。
+            </h2>
+
+        </section>
+
+        <nav class="error-actions"
+             aria-label="ページ移動">
+
+            <a class="error-button"
+               th:href="@{/}">
+                ホームへ
+            </a>
+
+        </nav>
+
+    </main>
+
+</body>
+</html>
