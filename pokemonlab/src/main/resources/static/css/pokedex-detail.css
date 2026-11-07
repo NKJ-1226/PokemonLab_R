@@ -1,0 +1,728 @@
+* { box-sizing: border-box; }
+:root {
+    --red-main: #c62828;
+    --red-dark: #7f1010;
+    --red-deep: #4f0707;
+    --screen-main: #26352f;
+    --screen-dark: #0f1714;
+    --screen-border: #6f7d77;
+    --text-main: #f3fff8;
+    --text-green: #a7ffd1;
+    --text-yellow: #ffd95a;
+    --panel: #18231f;
+    --line: #40554c;
+}
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 28px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: radial-gradient(circle at top, #454545 0%, #191919 48%, #080808 100%);
+    color: var(--text-main);
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+}
+/* 図鑑端末本体 */
+.device {
+    width: min(980px, 100%);
+    padding: 24px;
+    background: linear-gradient(145deg, #e04444 0%, var(--red-main) 32%, var(--red-dark) 68%, var(--red-deep) 100%);
+    border: 4px solid #4a0505;
+    border-radius: 34px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), inset 0 0 0 3px rgba(255, 255, 255, 0.14), inset 0 -12px 20px rgba(55, 0, 0, 0.35);
+}
+/* 上部タイトル */
+.device-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; padding: 2px 8px; }
+.status-light {
+    width: 24px; height: 24px; flex-shrink: 0;
+    background: #63ffb5; border: 3px solid #18452f; border-radius: 50%;
+    box-shadow: 0 0 10px #63ffb5, 0 0 24px rgba(99, 255, 181, 0.78);
+}
+.system-label { margin: 0 0 3px; color: #ffd9d9; font-size: 11px; letter-spacing: 0.18em; }
+.device-header h1 { margin: 0; color: white; font-size: clamp(24px, 4vw, 36px); letter-spacing: 0.04em; }
+.list-button {
+    margin-left: auto; padding: 10px 18px;
+    background: linear-gradient(#3d3d3d, #202020);
+    border: 2px solid #686868; border-radius: 12px;
+    color: white; font-weight: bold; text-decoration: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 0 #121212;
+}
+.list-button:hover { transform: translateY(1px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 0 #121212; }
+/* 液晶全体 */
+.screen {
+    padding: 24px;
+    background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 2px, transparent 2px, transparent 5px), linear-gradient(180deg, var(--screen-main), var(--screen-dark));
+    border: 6px solid var(--screen-border); border-radius: 20px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.82), 0 0 0 3px #262d2a;
+}
+/* 上段：画像＋基本情報 */
+.pokemon-summary { display: grid; grid-template-columns: minmax(260px, 0.95fr) minmax(0, 1.35fr); gap: 24px; margin-bottom: 24px; }
+.image-panel {
+    position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 330px; padding: 22px;
+    background: radial-gradient(circle at center, rgba(120, 255, 185, 0.08), transparent 70%), #0c1612;
+    border: 2px solid #597266; border-radius: 14px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.72);
+}
+.image-panel::before, .image-panel::after { content: ""; position: absolute; width: 12px; height: 12px; background: #73877d; border-radius: 50%; }
+.image-panel::before { top: 10px; left: 10px; }
+.image-panel::after { right: 10px; bottom: 10px; }
+.pokemon-sprite { width: 240px; height: 240px; max-width: 100%; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 14px 10px rgba(0, 0, 0, 0.5)); }
+.image-fallback { display: none; place-items: center; width: 210px; max-width: 100%; height: 210px; border: 3px dashed #65927e; border-radius: 18px; color: #89ffc3; font-size: 86px; font-weight: bold; }
+.image-caption { margin: 16px 0 0; color: #789789; font-size: 11px; letter-spacing: 0.2em; }
+/* 右側の基本情報 */
+.identity-panel {
+    min-width: 0; padding: 24px;
+    background: rgba(20, 34, 28, 0.82);
+    border: 2px solid #577064; border-radius: 14px;
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
+}
+.dex-number { margin: 0; color: var(--text-green); font-size: 18px; font-weight: bold; letter-spacing: 0.12em; }
+.identity-panel h2 { margin: 10px 0 20px; color: white; font-size: clamp(30px, 5vw, 54px); line-height: 1.1; overflow-wrap: anywhere; }
+.types { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.type-badge {
+    min-width: 92px; padding: 8px 16px;
+    background: #41554c; border: 2px solid #7a9187; border-radius: 999px;
+    color: white; text-align: center; font-weight: bold;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+/* ポケモン基本データ */
+.pokemon-profile {
+    margin-top: 18px; padding: 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--line); border-radius: 8px;
+}
+.profile-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; padding: 9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.profile-row:last-child { border-bottom: none; }
+.profile-label { flex-shrink: 0; font-size: 13px; color: var(--text-green); white-space: nowrap; }
+.profile-row strong { min-width: 0; font-size: 15px; color: var(--text-main); text-align: right; overflow-wrap: anywhere; }
+/* 分岐進化：複数の名前を折り返して表示 */
+.evolution-names {
+    display: flex; flex-wrap: wrap; justify-content: flex-end;
+    gap: 6px 10px; min-width: 0; text-align: right;
+}
+.evolution-link {
+    color: var(--text-green); font-size: 15px; font-weight: bold;
+    text-decoration: none; overflow-wrap: anywhere;
+    transition: color 0.2s ease;
+}
+.evolution-link:hover, .evolution-link:focus-visible { color: var(--text-yellow); text-decoration: underline; }
+.evolution-empty { color: var(--text-main); font-size: 15px; font-weight: bold; }
+/* 種族値エリア */
+.stats-panel {
+    padding: 22px; background: #0b1511;
+    border: 2px solid #43594f; border-radius: 14px;
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55);
+}
+.stats-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #3d5148; }
+.stats-title h3 { margin: 0; color: var(--text-green); letter-spacing: 0.14em; }
+.stats-title strong { color: var(--text-yellow); font-size: 18px; }
+.stat-row { display: grid; grid-template-columns: 96px 1fr 48px; align-items: center; gap: 14px; margin: 13px 0; }
+.stat-row > span { color: #edf7f2; font-weight: bold; }
+.stat-track { height: 17px; overflow: hidden; background: #24322c; border: 1px solid #53675e; border-radius: 999px; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45); }
+.stat-fill { height: 100%; min-width: 3px; background: linear-gradient(90deg, #43bd80, #b3ffda); border-radius: inherit; box-shadow: 0 0 10px rgba(79, 255, 170, 0.6); }
+.stat-row strong { color: white; text-align: right; }
+/* 前後移動 */
+.navigation { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+.nav-button {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 68px; padding: 13px 18px;
+    background: linear-gradient(180deg, #3d3d3d, #202020);
+    border: 2px solid #666; border-radius: 13px;
+    color: white; text-decoration: none;
+    box-shadow: 0 5px 0 #121212, inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.nav-button:hover { transform: translateY(2px); box-shadow: 0 3px 0 #121212, inset 0 1px 0 rgba(255, 255, 255, 0.16); }
+.nav-button span { color: #91ffc8; font-size: 12px; letter-spacing: 0.1em; }
+.nav-button strong { font-size: 16px; overflow-wrap: anywhere; text-align: right; }
+.nav-button.disabled { opacity: 0.38; cursor: not-allowed; }
+/* スマホ対応 */
+@media (max-width: 720px) {
+    body { padding: 12px; }
+    .device { padding: 14px; border-radius: 22px; }
+    .screen { padding: 14px; }
+    .pokemon-summary { grid-template-columns: 1fr; }
+    .image-panel { min-height: 280px; }
+    .pokemon-sprite { width: 210px; height: 210px; }
+    .stat-row { grid-template-columns: 80px 1fr 40px; gap: 8px; }
+    .navigation { grid-template-columns: 1fr; }
+    .list-button { padding: 8px 11px; }
+}
+@media (max-width: 420px) {
+    .device-header { flex-wrap: wrap; }
+    .list-button { margin-left: auto; }
+    .identity-panel { padding: 16px; }
+    .pokemon-profile { padding: 10px; }
+    .profile-row { gap: 10px; }
+}
+
+/* ========================================
+   進化ライン
+======================================== */
+
+/* 進化ライン全体 */
+.evolution-panel {
+    margin-top: 24px;
+    padding: 22px;
+
+    background: #0b1511;
+    border: 2px solid #43594f;
+    border-radius: 14px;
+
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.55);
+}
+
+/* 進化ラインのタイトル */
+.evolution-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #3d5148;
+}
+
+.evolution-title h3 {
+    margin: 0;
+
+    color: var(--text-green);
+    letter-spacing: 0.14em;
+}
+
+.evolution-title span {
+    color: var(--text-yellow);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* 進化ラインの配置 */
+.evolution-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+/* 各進化段階 */
+.evolution-group {
+    width: 100%;
+    text-align: center;
+}
+
+/* 進化段階の見出し */
+.evolution-label {
+    margin: 0 0 12px;
+
+    color: #91ffc8;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+.evolution-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* 進化ライン */
+.evolution-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: auto;
+    padding: 2px 6px;
+
+    color: var(--text-main);
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+/* 進化先リンクのホバー */
+a.evolution-card:hover {
+    transform: translateY(-4px);
+    color: var(--text-yellow);
+}
+
+/* ポケモン画像 */
+.evolution-card img {
+    width: 64px;
+    height: 64px;
+
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+/* ポケモン名 */
+.evolution-card strong {
+    font-size: 13px;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+
+/* 現在表示中のポケモン */
+.evolution-card.current {
+    color: var(--text-green);
+}
+
+/* 進化方向の矢印 */
+.evolution-arrow {
+    margin: 4px 0;
+
+    color: var(--text-yellow);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* スマホ対応 */
+@media (max-width: 720px) {
+
+    .evolution-panel {
+        padding: 14px;
+    }
+
+    .evolution-card {
+        width: auto;
+        padding: 8px 6px;
+    }
+
+    .evolution-card img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .evolution-card strong {
+        font-size: 12px;
+    }
+
+    .evolution-cards {
+        gap: 8px;
+    }
+}
+
+/* ========================================
+   図鑑詳細：スマホ向けコンパクト表示
+======================================== */
+
+@media (max-width: 720px) {
+
+    /* 端末の外枠と画面 */
+    body {
+        padding: 8px;
+    }
+
+    .device {
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+    .screen {
+        padding: 10px;
+    }
+
+    /* ヘッダー */
+    .device-header {
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 2px;
+    }
+
+    .device-header h1 {
+        font-size: clamp(18px, 5vw, 24px);
+    }
+
+    .status-light {
+        width: 18px;
+        height: 18px;
+    }
+
+    .list-button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    /* 画像と基本情報を横並びに */
+    .pokemon-summary {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: 10px;
+        margin-bottom: 14px;
+        align-items: stretch;
+    }
+
+    .image-panel {
+        min-height: 0;
+        padding: 8px;
+    }
+
+    .pokemon-sprite {
+        width: 100%;
+        height: auto;
+        max-height: 160px;
+        aspect-ratio: 1;
+        object-fit: contain;
+    }
+
+    .image-fallback {
+        width: 100%;
+        height: 120px;
+        font-size: 48px;
+    }
+
+    /* 基本情報 */
+    .identity-panel {
+        padding: 10px;
+    }
+
+    .dex-number {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+
+    .identity-panel h2 {
+        margin: 6px 0 10px;
+        font-size: clamp(17px, 4.5vw, 25px);
+        line-height: 1.25;
+    }
+
+    .types {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+
+    .type-badge {
+        min-width: 0;
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .identity-panel > p:not(.dex-number) {
+        margin: 8px 0;
+        font-size: 12px;
+    }
+
+    .pokemon-profile {
+        margin-top: 8px;
+        padding: 6px;
+    }
+
+    .profile-row {
+        gap: 4px;
+        padding: 6px 0;
+    }
+
+    .profile-label,
+    .profile-row strong {
+        font-size: 11px;
+    }
+
+    /* 種族値 */
+    .stats-panel {
+        padding: 12px;
+    }
+
+    .stats-title {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .stats-title h3,
+    .stats-title strong {
+        font-size: 15px;
+    }
+
+    .stat-row {
+        grid-template-columns: 74px minmax(0, 1fr) 30px;
+        gap: 8px;
+        margin: 8px 0;
+        font-size: 12px;
+    }
+
+    .stat-track {
+        height: 12px;
+    }
+
+    /* 進化ライン */
+    .evolution-panel {
+        margin-top: 14px;
+        padding: 12px;
+    }
+
+    .evolution-title {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .evolution-title h3 {
+        font-size: 15px;
+    }
+
+    .evolution-content {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .evolution-group {
+        width: auto;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .evolution-cards {
+        gap: 4px;
+    }
+
+    .evolution-card {
+        flex-direction: column;
+        gap: 4px;
+        padding: 4px;
+    }
+
+    .evolution-card img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .evolution-card strong {
+        max-width: 90px;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .evolution-arrow {
+        margin: 0 4px;
+        font-size: 0;
+    }
+
+    .evolution-arrow::after {
+        content: "▶";
+        font-size: 14px;
+    }
+
+    /* 前後移動 */
+    .navigation {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .nav-button {
+        min-width: 0;
+        min-height: 54px;
+        padding: 8px;
+        gap: 4px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nav-button strong {
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+/* ========================================
+   スマホ版：種族値と進化ラインを横並び
+======================================== */
+
+@media (max-width: 720px) {
+
+    /* 画面全体を2列のグリッドに */
+    .screen {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+    }
+
+    /* 画像＋基本情報は横幅いっぱい */
+    .pokemon-summary {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+    }
+
+    /* 左側：種族値 */
+    .stats-panel {
+        grid-column: 1;
+        min-width: 0;
+        padding: 8px;
+    }
+
+    /* 右側：進化ライン */
+    .evolution-panel {
+        grid-column: 2;
+        min-width: 0;
+        margin-top: 0;
+        padding: 8px;
+    }
+
+    /* 種族値の見出し */
+    .stats-title {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .stats-title h3,
+    .stats-title strong {
+        font-size: 12px;
+    }
+
+    /* 狭いカラム内でもバーを表示 */
+    .stat-row {
+        grid-template-columns: 54px minmax(0, 1fr) 24px;
+        gap: 4px;
+        margin: 10px 0;
+        font-size: 10px;
+    }
+
+    .stat-track {
+        height: 10px;
+    }
+
+    /* 進化ラインは縦並びに戻す */
+    .evolution-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .evolution-group {
+        width: 100%;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .evolution-arrow {
+        font-size: 13px;
+        margin: 2px 0;
+    }
+
+    .evolution-arrow::after {
+        content: none;
+    }
+
+    .evolution-cards {
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .evolution-card {
+        flex-direction: row;
+        gap: 4px;
+        padding: 2px;
+    }
+
+    .evolution-card img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .evolution-card strong {
+        font-size: 10px;
+        text-align: left;
+    }
+
+    .evolution-title {
+        margin-bottom: 12px;
+    }
+
+    .evolution-title h3 {
+        font-size: 12px;
+    }
+}
+/* ========================================
+   種族値 ＋ 進化ライン：PC・スマホ共通
+======================================== */
+
+/* PC版 */
+.screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 20px;
+    align-items: start;
+}
+
+/* 画像＋基本情報は横幅いっぱい */
+.pokemon-summary {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+/* 左側：種族値 */
+.stats-panel {
+    grid-column: 1;
+    min-width: 0;
+}
+
+/* 右側：進化ライン */
+.evolution-panel {
+    grid-column: 2;
+    min-width: 0;
+    margin-top: 0;
+}
+
+/* ========================================
+   スマホ版
+======================================== */
+
+@media (max-width: 720px) {
+
+    .screen {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .stats-panel,
+    .evolution-panel {
+        padding: 8px;
+    }
+}
+/* スマホ版：分岐進化を2列表示 */
+@media (max-width: 720px) {
+
+    .evolution-cards:has(> :nth-child(2)) {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 4px;
+        width: 100%;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card {
+        min-width: 0;
+        flex-direction: column;
+        gap: 3px;
+        padding: 4px 2px;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .evolution-cards:has(> :nth-child(2)) .evolution-card strong {
+        max-width: 100%;
+        font-size: 10px;
+        text-align: center;
+    }
+}

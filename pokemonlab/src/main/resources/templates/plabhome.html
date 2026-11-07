@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PokemonLab</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/pokemon-type.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+
+<main class="pokegear">
+
+    <!-- ヘッダー -->
+    <header class="title-bar">
+
+        <div class="light"></div>
+
+        <h1>PokemonLab</h1>
+
+    </header>
+
+    <!-- メイン画面 -->
+    <section class="screen">
+
+        <!-- 左側：ポケモン画像 -->
+        <div class="pokemon-left">
+
+            <div class="pokemon-image">
+
+                <img
+                    class="home-pokemon-sprite"
+                    th:src="@{/images/pokemon/{id}.png(id=${pokemon.id})}"
+                    th:alt="${pokemon.name}"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                <!-- 画像が存在しない場合 -->
+                <div class="image-preparing">
+
+                    <span class="question-mark">?</span>
+
+                    <span class="preparing-text">
+                        IMAGE PREPARING
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 右側：ポケモン情報 -->
+        <div class="pokemon-right">
+
+            <div class="pokemon-number"
+                 th:text="'No.' + ${#numbers.formatInteger(pokemon.pokedexNo, 3)}">
+            </div>
+
+            <h2 class="pokemon-name"
+                th:text="${pokemon.name}">
+            </h2>
+
+            <!-- タイプ -->
+            <div class="pokemon-info-group">
+
+                <div class="info-label">
+                    タイプ
+                </div>
+
+                <div class="home-types">
+
+                    <span
+                        class="home-type-badge"
+                        th:classappend="' type-' + ${pokemon.type1}"
+                        th:text="${pokemon.type1}">
+                    </span>
+
+                    <span
+                        class="home-type-badge"
+                        th:if="${pokemon.type2 != null and !pokemon.type2.isBlank()}"
+                        th:classappend="' type-' + ${pokemon.type2}"
+                        th:text="${pokemon.type2}">
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- 基本情報 -->
+            <div class="pokemon-info-list">
+
+                <div class="info-row">
+                    <span class="info-label">ぶんるい</span>
+                    <span class="info-value"
+                          th:text="${pokemon.category}">
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">高さ</span>
+                    <span class="info-value">
+                        <span th:text="${pokemon.height}"></span> m
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">重さ</span>
+                    <span class="info-value">
+                        <span th:text="${pokemon.weight}"></span> kg
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- メニュー -->
+    <nav class="menu">
+
+        <a th:href="@{/pokedex}" class="menu-button">
+            図鑑
+        </a>
+
+        <a th:href="@{/quiz}" class="menu-button">
+            クイズ
+        </a>
+        
+    </nav>
+
+</main>
+
+</body>
+</html>

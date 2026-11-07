@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比較クイズ回答結果 | PokemonLab</title>
+
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz-comparison.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+
+<main class="quiz-device comparison-device answer-device">
+
+    <header class="quiz-header answer-header">
+
+        <div class="quiz-light"></div>
+
+        <div>
+            <h1>回答結果</h1>
+        </div>
+
+        <div class="question-counter">
+            第 <span th:text="${questionNumber}">1</span>
+            /
+            <span th:text="${totalQuestion}">10</span> 問
+        </div>
+
+    </header>
+
+    <!-- 白いマス目背景 -->
+    <section class="answer-screen comparison-answer-screen">
+
+        <!-- 正誤判定 -->
+        <section class="answer-message comparison-answer-verdict"
+                 th:classappend="${correct}
+                     ? ' message-correct'
+                     : ' message-wrong'">
+
+            <div>
+                <strong th:text="${correct}
+                    ? 'あたり です！'
+                    : 'はずれです……'">
+                    判定
+                </strong>
+
+                <p>
+                    正解：
+                    <span th:text="${correctPokemon.name}"></span>
+                    ／ あなたの回答：
+                    <span th:text="${selectedPokemon.name}"></span>
+                </p>
+            </div>
+
+        </section>
+
+        <!-- 比較対象 -->
+        <h2 class="comparison-answer-heading"
+            th:text="${quizMode.name() == 'HEIGHT_COMPARISON'}
+                ? '4匹の高さ'
+                : '4匹の重さ'">
+            4匹の数値
+        </h2>
+
+        <div class="comparison-grid comparison-answer-grid">
+
+            <article class="comparison-reveal-card"
+                     th:each="choice : ${choices}"
+                     th:classappend="${choice.id == correctPokemon.id}
+                         ? ' is-correct'
+                         : (${choice.id == selectedPokemon.id}
+                             ? ' is-selected' : '')">
+
+                <div class="comparison-card-labels">
+
+                    <span class="comparison-tag tag-correct"
+                          th:if="${choice.id == correctPokemon.id}">
+                        正解
+                    </span>
+
+                    <span class="comparison-tag tag-selected"
+                          th:if="${choice.id == selectedPokemon.id}">
+                        あなたの回答
+                    </span>
+
+                </div>
+
+                <div class="comparison-image-wrap">
+
+                    <img th:src="@{/images/pokemon/{id}.png(id=${choice.id})}"
+                         th:alt="${choice.name}"
+                         onerror="
+                             this.style.display='none';
+                             this.nextElementSibling.style.display='grid';
+                         ">
+
+                    <span class="comparison-image-fallback">?</span>
+
+                </div>
+
+                <strong class="comparison-pokemon-name"
+                        th:text="${choice.name}">
+                    ポケモン
+                </strong>
+
+                <div class="comparison-measurement"
+                     th:if="${quizMode.name() == 'HEIGHT_COMPARISON'}">
+
+                    <strong th:text="${choice.height}">0.0</strong>
+                    <span>m</span>
+
+                </div>
+
+                <div class="comparison-measurement"
+                     th:if="${quizMode.name() == 'WEIGHT_COMPARISON'}">
+
+                    <strong th:text="${choice.weight}">0.0</strong>
+                    <span>kg</span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <footer class="answer-footer comparison-answer-footer">
+
+        <div class="answer-score">
+            <span>SCORE</span>
+            <strong th:text="${score}">0</strong>
+            <span>/</span>
+            <span th:text="${totalQuestion}">10</span>
+        </div>
+
+        <form class="next-form"
+              th:action="@{/quiz/next}"
+              method="post">
+
+            <button class="next-button"
+                    type="submit"
+                    th:text="${questionNumber == totalQuestion}
+                        ? '結果を見る ▶'
+                        : 'つぎへすすむ ▶'">
+                つぎへすすむ ▶
+            </button>
+
+        </form>
+
+    </footer>
+
+</main>
+
+</body>
+</html>

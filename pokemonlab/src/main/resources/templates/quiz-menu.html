@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>種族値クイズ</title>
+    <link rel="stylesheet" th:href="@{/css/quiz-menu.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+
+<main class="quiz-device">
+
+    <header class="quiz-header">
+        <div class="quiz-light"></div>
+
+        <div><h1>クイズモードを選択</h1></div>
+
+        <a th:href="@{/}">ホーム</a>
+    </header>
+
+    <section class="quiz-screen">
+
+        <!-- タイプクイズ -->
+        <div class="mode-card">
+
+            <h2>タイプクイズ</h2>
+
+            <p>
+                ポケモンの画像と名前から、
+                正しいタイプの組み合わせを選びます。
+                全10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                    name="mode"
+                    value="TYPE_QUIZ">
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+        
+        <!-- 身長比較クイズ -->
+        <div class="mode-card">
+
+            <h2>身長比較クイズ</h2>
+
+            <p>
+                4匹のポケモンの中から、
+                最も身長が高いポケモンを選びます。
+                全10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                       name="mode"
+                       value="HEIGHT_COMPARISON">
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- 体重比較クイズ -->
+        <div class="mode-card">
+
+            <h2>体重比較クイズ</h2>
+
+            <p>
+                4匹のポケモンの中から、
+                最も体重が重いポケモンを選びます。
+                全10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                       name="mode"
+                       value="WEIGHT_COMPARISON">
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+        
+        <!-- 各世代・最終進化のみ -->
+        <div class="mode-card">
+
+            <h2>各世代・最終進化のみ</h2>
+
+            <p>
+                選択した世代から、進化先のないポケモンを対象に
+                10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                       name="mode"
+                       value="GENERATION_FINAL">
+
+                <label for="generation">
+                    世代を選択
+                </label>
+
+                <select id="generation"
+                        name="generation"
+                        required>
+                    <option value="1">第1世代</option>
+                    <option value="2">第2世代</option>
+                    <option value="3">第3世代</option>
+                    <option value="4">第4世代</option>
+                    <option value="5">第5世代</option>
+                    <option value="6">第6世代</option>
+                    <option value="7">第7世代</option>
+                    <option value="8">第8世代</option>
+                    <option value="9">第9世代</option>
+                </select>
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- 全世代・最終進化のみ -->
+        <div class="mode-card">
+
+            <h2>全世代・最終進化のみ</h2>
+
+            <p>
+                全世代から、進化先のないポケモンを対象に
+                10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                       name="mode"
+                       value="ALL_GENERATIONS_FINAL">
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- 全世代・全ポケモン -->
+        <div class="mode-card">
+
+            <h2>全世代・全ポケモン</h2>
+
+            <p>
+                全ポケモンを対象に、完全ランダムで
+                10問出題します。
+            </p>
+
+            <form th:action="@{/quiz/start}" method="post">
+
+                <input type="hidden"
+                       name="mode"
+                       value="ALL_POKEMON">
+
+                <button type="submit">
+                    このモードで開始
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <title>比較クイズ | PokemonLab</title>
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz-comparison.css}">
+    <link rel="stylesheet" th:href="@{/css/fonts.css}">
+</head>
+<body>
+<main class="quiz-device comparison-device">
+    <header class="quiz-header">
+        <div class="quiz-light"></div>
+        <div>
+            <!-- <p>POKEMON COMPARISON QUIZ</p> -->
+            <h1 th:text="${quizMode.name() == 'HEIGHT_COMPARISON'} ? 'いちばん背が高いのは？' : 'いちばん重いのは？'">比較クイズ</h1>
+        </div>
+        <div class="question-counter">
+            第 <span th:text="${questionNumber}">1</span> / <span th:text="${totalQuestion}">10</span> 問
+        </div>
+
+        <a th:href="@{/quiz}">クイズ選択画面に戻る</a>
+        
+    </header>
+    <section class="quiz-screen">
+        <div class="comparison-intro">
+            <h2 th:text="${quizMode.name() == 'HEIGHT_COMPARISON'} ? '高さクイズ' : '重さクイズ'"></h2>
+            <p>4匹の中から正解だと思うポケモンを選ぼう！ 正解は回答後に公開されます。</p>
+        </div>
+        <div class="comparison-grid">
+            <form class="comparison-choice" th:each="choice : ${choices}"
+                  th:action="@{/quiz/answer}" method="post">
+                <input type="hidden" name="selectedId" th:value="${choice.id}">
+                <button type="submit" class="comparison-choice-button">
+                    <span class="comparison-image-wrap">
+                        <img th:src="@{/images/pokemon/{id}.png(id=${choice.id})}"
+                             th:alt="${choice.name}"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+                        <span class="comparison-image-fallback">?</span>
+                    </span>
+                    <span class="comparison-pokemon-name" th:text="${choice.name}">ポケモン</span>
+                    <span class="comparison-select-label">このポケモンを選ぶ ▶</span>
+                </button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
