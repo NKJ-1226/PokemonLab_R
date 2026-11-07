@@ -34,3 +34,7 @@ build/
 
 .env
 src/main/resources/application-local.properties
+
+# H2 Database
+*.mv.db
+*.trace.db
