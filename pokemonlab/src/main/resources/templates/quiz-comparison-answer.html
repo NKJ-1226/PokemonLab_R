@@ -108,7 +108,7 @@
                 <div class="comparison-measurement"
                      th:if="${quizMode.name() == 'HEIGHT_COMPARISON'}">
 
-                    <strong th:text="${choice.height}">0.0</strong>
+                    <strong th:text="${choice.formattedHeight}">0.0</strong>
                     <span>m</span>
 
                 </div>
@@ -116,7 +116,7 @@
                 <div class="comparison-measurement"
                      th:if="${quizMode.name() == 'WEIGHT_COMPARISON'}">
 
-                    <strong th:text="${choice.weight}">0.0</strong>
+                    <strong th:text="${choice.formattedWeight}">0.0</strong>
                     <span>kg</span>
 
                 </div>

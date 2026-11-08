@@ -70,8 +70,8 @@
                     <div class="profile-row">
                         <span class="profile-label">たかさ</span>
                         <strong>
-                            <span th:text="${pokemon.height != null ? #numbers.formatDecimal(pokemon.height, 1, 1) : '---'}"></span>
-                            <span th:if="${pokemon.height != null}">m</span>
+                            <span th:text="${pokemon.formattedHeight != null ? #numbers.formatDecimal(pokemon.formattedHeight, 1, 1) : '---'}"></span>
+                            <span th:if="${pokemon.formattedHeight != null}">m</span>
                         </strong>
                     </div>
 
@@ -79,8 +79,8 @@
                     <div class="profile-row">
                         <span class="profile-label">おもさ</span>
                         <strong>
-                            <span th:text="${pokemon.weight != null ? #numbers.formatDecimal(pokemon.weight, 1, 1) : '---'}"></span>
-                            <span th:if="${pokemon.weight != null}">kg</span>
+                            <span th:text="${pokemon.formattedWeight != null ? #numbers.formatDecimal(pokemon.formattedWeight, 1, 1) : '---'}"></span>
+                            <span th:if="${pokemon.formattedWeight != null}">kg</span>
                         </strong>
                     </div>
 

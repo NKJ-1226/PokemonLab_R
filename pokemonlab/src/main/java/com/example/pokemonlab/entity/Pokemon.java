@@ -2,10 +2,14 @@
 package com.example.pokemonlab.entity;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
 import lombok.Data;
 
 /**
@@ -84,4 +88,28 @@ public class Pokemon {
     /** 重さ */
     @Column(name = "weight")
     private BigDecimal weight;
+
+    /**
+     * 高さを小数点第一位まで表示するように設定
+     *
+     * @return 例：10.0m
+     */
+    @Transient
+    public String getFormattedHeight() {
+        return height == null
+                ? "-"
+                : height.setScale(1, RoundingMode.HALF_UP).toPlainString();
+    }
+
+    /**
+     * 重さを小数点第一位まで表示するように設定
+     *
+     * @return 例：99.9kg
+     */
+    @Transient
+    public String getFormattedWeight() {
+        return weight == null
+                ? "-"
+                : weight.setScale(1, RoundingMode.HALF_UP).toPlainString();
+    }
 }
